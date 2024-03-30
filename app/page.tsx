@@ -3,10 +3,12 @@
 import { motion } from "framer-motion";
 import React from "react";
 import { AuroraBackground } from "../components/ui/aurora-background";
+import { NavbarDemo } from "@/components/navbar";
 
 export default function AuroraBackgroundDemo() {
   return (
     <AuroraBackground>
+        <NavbarDemo/>
       <motion.div
         initial={{ opacity: 0.0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
