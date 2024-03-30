@@ -15,7 +15,8 @@ export function Providers({ children }: { children: React.ReactNode }) {
           appearance: {
             theme: "dark",
             accentColor: "#676FFF",
-            // logo: "https://your-logo-url",
+            showWalletLoginFirst: true,
+            // logo: "https://i.ibb.co/HNj4bvd/logo-white.png",
           },
           // Create embedded wallets for users who don't have a wallet
         //   embeddedWallets: {
