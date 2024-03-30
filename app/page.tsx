@@ -7,7 +7,7 @@ import { usePrivy, useWallets } from "@privy-io/react-auth";
 import { TextGenerateEffect } from "@/components/ui/text-generate";
 
 export default function Home() {
-  const { ready, authenticated, login } = usePrivy();
+  const { ready, authenticated, login, user, linkEmail } = usePrivy();
   const { wallets } = useWallets();
   const wallet = wallets[0];
   const shouldLogin = !ready || (ready && !authenticated);
@@ -32,16 +32,16 @@ export default function Home() {
         </div>
         <button
           className="relative inline-flex h-12 overflow-hidden rounded-full p-[2px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50"
-          disabled={!shouldLogin}
-          onClick={login}
+          disabled={user?.email && !shouldLogin}
+          onClick={shouldLogin?login:user?.email?() => {}:linkEmail}
         >
           <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
           <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-6 py-1 text-lg font-medium text-white backdrop-blur-3xl">
             {shouldLogin
               ? "Get started"
-              : wallet.address.substring(0, 8) +
-                "..." +
-                wallet.address.substring(36, wallet.address.length)}
+              : user?.email?wallet?.address.substring(0, 8) +
+              "..." +
+              wallet?.address.substring(36, wallet?.address.length):"Complete Profile"}
           </span>
         </button>
       </motion.div>

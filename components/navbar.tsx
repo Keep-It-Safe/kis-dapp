@@ -14,7 +14,7 @@ export function NavbarDemo() {
 }
 
 function Navbar({ className }: { className?: string }) {
-  const { ready, authenticated, login, logout } = usePrivy();
+  const { ready, authenticated, login, logout, user} = usePrivy();
 
   const shouldLogin = !ready || (ready && !authenticated);
   const [active, setActive] = useState<string | null>(null);
@@ -24,10 +24,23 @@ function Navbar({ className }: { className?: string }) {
     >
       <Menu setActive={setActive}>
         <Link href="/">Home</Link>
-        <Link href="/request">Request</Link>
-        <Link href="/profile">Profile</Link>
-        <button onClick={shouldLogin?login:logout} className={shouldLogin?"text-green-300":"text-red-300"}>
-          {shouldLogin?"Login":"Logout"}
+        <Link
+          href="/request"
+          className={shouldLogin || !user?.email ? "pointer-events-none" : ""}
+        >
+          Request
+        </Link>
+        <Link
+          href="/profile"
+          className={shouldLogin || !user?.email ? "pointer-events-none" : ""}
+        >
+          Profile
+        </Link>
+        <button
+          onClick={shouldLogin ? login : logout}
+          className={shouldLogin ? "text-green-300" : "text-red-300"}
+        >
+          {shouldLogin ? "Login" : "Logout"}
         </button>
       </Menu>
     </div>
