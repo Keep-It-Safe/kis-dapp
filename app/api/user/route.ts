@@ -6,7 +6,7 @@ import prisma from "../../../lib/prisma";
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const walletAddress = searchParams.get("address");
-
+  const isUniversity = searchParams.get("isUniversity") === 'true';
   if (!walletAddress) {
     return NextResponse.json(
       { message: "Missing wallet address" },
@@ -24,6 +24,8 @@ export async function GET(request: Request) {
     const user = await prisma.user.create({
       data: {
         address: walletAddress,
+        isUniversity: isUniversity,
+        isProfileComplete: true
       },
     });
     return NextResponse.json({ user }, { status: 200 });
