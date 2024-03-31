@@ -41,7 +41,7 @@ export default function Home() {
               ? "Get started"
               : user?.email?wallet?.address.substring(0, 8) +
               "..." +
-              wallet?.address.substring(36, wallet?.address.length):"Complete Profile"}
+              wallet?.address.substring(36, wallet?.address.length):"Verify university email"}
           </span>
         </button>
       </motion.div>
