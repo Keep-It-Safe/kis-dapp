@@ -2,6 +2,6 @@
 
 export default function PendingRequest() {
     return (
-        <h1>Raise a request</h1>
+        <h1>Pending requests</h1>
     );
 }
