@@ -16,6 +16,7 @@ import {
 } from "@nextui-org/react";
 
 import axios from "axios";
+import { toast } from 'react-hot-toast';
 
 export default function Home() {
   const { ready, authenticated, login, user, linkEmail } = usePrivy();
@@ -28,27 +29,35 @@ export default function Home() {
   const fetchUserDetails = async () => {
     onClose();
     linkEmail();
-    await axios.get(`/api/user?address=${wallet.address}&isUniversity=false`).then(
-      (response) => {
-        console.log(response);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    try {
+      await axios
+        .get(`/api/user?address=${wallet.address}&isUniversity=false`)
+        .then(
+          (response) => {
+            console.log(response);
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+    } catch (err) {
+        toast.error("Registration error! Try again")
+    }   
   };
 
   const fetchUniDetails = async () => {
     onClose();
     linkEmail();
-    await axios.get(`/api/user?address=${wallet.address}&isUniversity=true`).then(
-      (response) => {
-        console.log(response);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    await axios
+      .get(`/api/user?address=${wallet.address}&isUniversity=true`)
+      .then(
+        (response) => {
+          console.log(response);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
   };
 
   return (
@@ -94,9 +103,9 @@ export default function Home() {
         classNames={{
           body: "py-6",
           backdrop: "bg-[#292f46]/50 backdrop-opacity-40",
-        //   base: "border-[#292f46] bg-[#19172c] dark:bg-[#19172c] text-[#fff]",
-        //   header: "border-[#292f46]",
-        //   footer: "border-t-[1px] border-[#292f46]",
+          //   base: "border-[#292f46] bg-[#19172c] dark:bg-[#19172c] text-[#fff]",
+          //   header: "border-[#292f46]",
+          //   footer: "border-t-[1px] border-[#292f46]",
           closeButton: "display-hidden",
         }}
       >
@@ -107,11 +116,30 @@ export default function Home() {
                 Choose one
               </ModalHeader>
               <ModalBody className="flex-row justify-around">
-                <Button color="primary" variant="bordered" size="lg" onPress={fetchUserDetails}>Student</Button>
-                <Button color="primary" variant="bordered" size="lg" onPress={fetchUniDetails}>University</Button>
+                <Button
+                  color="primary"
+                  variant="bordered"
+                  size="lg"
+                  onPress={fetchUserDetails}
+                >
+                  Student
+                </Button>
+                <Button
+                  color="primary"
+                  variant="bordered"
+                  size="lg"
+                  onPress={fetchUniDetails}
+                >
+                  University
+                </Button>
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" size="lg" variant="light" onPress={onClose}>
+                <Button
+                  color="danger"
+                  size="lg"
+                  variant="light"
+                  onPress={onClose}
+                >
                   Close
                 </Button>
               </ModalFooter>

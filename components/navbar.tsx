@@ -4,6 +4,7 @@ import { HoveredLink, Menu, MenuItem, ProductItem } from "./ui/navbar-menu";
 import Link from "next/link";
 import { cn } from "@/utils/cn";
 import { usePrivy } from "@privy-io/react-auth";
+import { toast } from 'react-hot-toast';
 
 export function NavbarDemo() {
   return (
@@ -13,11 +14,20 @@ export function NavbarDemo() {
   );
 }
 
+
 function Navbar({ className }: { className?: string }) {
+ 
+
   const { ready, authenticated, login, logout, user} = usePrivy();
 
   const shouldLogin = !ready || (ready && !authenticated);
   const [active, setActive] = useState<string | null>(null);
+
+  const logoutFunction = () => {
+    logout();
+    toast.success("Logout successful")
+  }
+
   return (
     <div
       className={cn("fixed top-10 inset-x-0 max-w-4xl mx-auto z-50", className)}
@@ -37,7 +47,7 @@ function Navbar({ className }: { className?: string }) {
           Profile
         </Link>
         <button
-          onClick={shouldLogin ? login : logout}
+          onClick={shouldLogin ? login : logoutFunction}
           className={shouldLogin ? "text-green-300" : "text-red-300"}
         >
           {shouldLogin ? "Login" : "Logout"}
