@@ -1,5 +1,5 @@
 "use client";
-import {useEffect, useCallback, useState} from "react"
+import { useEffect, useCallback, useState } from "react";
 import { motion } from "framer-motion";
 import React from "react";
 import { AuroraBackground } from "../components/ui/aurora-background";
@@ -24,40 +24,32 @@ export default function Home() {
   const { wallets } = useWallets();
   const wallet = wallets[0];
   const [role, setRoles] = useState();
-  console.log(wallet);
 
   const shouldLogin = !ready || (ready && !authenticated);
   const words = `Let's Keep It Safe`;
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const { keepItSafeContract } = useKeepItSafeContract();
-  console.log(keepItSafeContract);
-  
-  const getRoles = useCallback(async() => {
-    const role = await keepItSafeContract?.getYourRole()
-    setRoles(role)
-  },[keepItSafeContract])
-  
-  useEffect(()=>{
-    getRoles();
-  }, [getRoles])
 
+  const getRoles = useCallback(async () => {
+    const role = await keepItSafeContract?.getYourRole();
+    setRoles(role);
+  }, [keepItSafeContract]);
+
+  useEffect(() => {
+    wallet?.address && getRoles();
+  }, [getRoles, wallet?.address]);
 
   const fetchUserDetails = async () => {
     onClose();
-    linkEmail();
     try {
-      await axios
-        .get(`/api/user?address=${wallet.address}&isUniversity=false`)
-        .then(
-          (response) => {
-            console.log(response);
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
-    } catch (err) {
-      toast.error("Registration error! Try again");
+      await linkEmail();
+      if (keepItSafeContract) {
+        await keepItSafeContract.addStudent();
+        toast.success("Student added successfully!");
+      }
+    } catch (error) {
+      console.error("Error linking email or adding student:", error);
+      toast.error("Failed to link email or add student.");
     }
   };
 
