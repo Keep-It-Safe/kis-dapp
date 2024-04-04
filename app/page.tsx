@@ -1,5 +1,5 @@
 "use client";
-
+import {useEffect, useCallback, useState} from "react"
 import { motion } from "framer-motion";
 import React from "react";
 import { AuroraBackground } from "../components/ui/aurora-background";
@@ -14,17 +14,33 @@ import {
   Button,
   useDisclosure,
 } from "@nextui-org/react";
+import { useKeepItSafeContract } from "@/hooks/useKeepItSafe";
 
 import axios from "axios";
-import { toast } from 'react-hot-toast';
+import { toast } from "react-hot-toast";
 
 export default function Home() {
   const { ready, authenticated, login, user, linkEmail } = usePrivy();
   const { wallets } = useWallets();
   const wallet = wallets[0];
+  const [role, setRoles] = useState();
+  console.log(wallet);
+
   const shouldLogin = !ready || (ready && !authenticated);
   const words = `Let's Keep It Safe`;
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  const { keepItSafeContract } = useKeepItSafeContract();
+  console.log(keepItSafeContract);
+  
+  const getRoles = useCallback(async() => {
+    const role = await keepItSafeContract?.getYourRole()
+    setRoles(role)
+  },[keepItSafeContract])
+  
+  useEffect(()=>{
+    getRoles();
+  }, [getRoles])
+
 
   const fetchUserDetails = async () => {
     onClose();
@@ -41,8 +57,8 @@ export default function Home() {
           }
         );
     } catch (err) {
-        toast.error("Registration error! Try again")
-    }   
+      toast.error("Registration error! Try again");
+    }
   };
 
   const fetchUniDetails = async () => {
@@ -103,9 +119,6 @@ export default function Home() {
         classNames={{
           body: "py-6",
           backdrop: "bg-[#292f46]/50 backdrop-opacity-40",
-          //   base: "border-[#292f46] bg-[#19172c] dark:bg-[#19172c] text-[#fff]",
-          //   header: "border-[#292f46]",
-          //   footer: "border-t-[1px] border-[#292f46]",
           closeButton: "display-hidden",
         }}
       >
