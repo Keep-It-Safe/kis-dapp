@@ -10,11 +10,14 @@ export default function RequestPage() {
   const { wallets } = useWallets();
   const wallet = wallets[0];
   const [isUniversity, setIsUniversity] = useState<Boolean>(false);
+  const [isLoading, setIsLoading] = useState<Boolean>(false);
   useEffect(() => {
+    setIsLoading(true);
     axios.get(`/api/findUser?address=${wallet?.address}`).then(
       (response) => {
-        setIsUniversity(response.data.isUniversity === "true");
+        setIsUniversity(response.data.isUniversity);
         console.log(response.data);
+        setIsLoading(false);
       },
       (error) => {
         console.log(error);
@@ -22,5 +25,5 @@ export default function RequestPage() {
     );
   }, []);
 
-  return isUniversity? <h1>University</h1>:<h1>Student</h1>
+  return isLoading?<h1>Loading...</h1>:(isUniversity? <h1>University</h1>:<h1>Student</h1>)
 }
