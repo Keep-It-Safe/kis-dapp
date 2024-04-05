@@ -25,7 +25,7 @@ export async function GET(request: Request) {
       data: {
         address: walletAddress,
         isUniversity: isUniversity,
-        isProfileComplete: true
+        isProfileComplete: false
       },
     });
     return NextResponse.json({ user }, { status: 200 });

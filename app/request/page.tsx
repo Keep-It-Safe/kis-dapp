@@ -1,6 +1,6 @@
 "use client";
 
-import { useWallets } from "@privy-io/react-auth";
+import { useWallets, usePrivy } from "@privy-io/react-auth";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import PendingRequest from "../../components/pending-request";
@@ -11,9 +11,10 @@ export default function RequestPage() {
   const wallet = wallets[0];
   const [isUniversity, setIsUniversity] = useState<Boolean>(false);
   useEffect(() => {
-    axios.get(`/api/findUser?address=${wallet.address}`).then(
+    axios.get(`/api/findUser?address=${wallet?.address}`).then(
       (response) => {
         setIsUniversity(response.data.isUniversity === "true");
+        console.log(response.data);
       },
       (error) => {
         console.log(error);
@@ -21,5 +22,5 @@ export default function RequestPage() {
     );
   }, []);
 
-  return isUniversity? <PendingRequest/>:<RaiseRequest/>
+  return isUniversity? <h1>University</h1>:<h1>Student</h1>
 }
