@@ -42,10 +42,9 @@ export default function UniversityProfileForm() {
         }
       );
       console.log(keepItSafeContract);
-      const instituteAddress = await keepItSafeContract?.getInstituteAddress(_domain);
-      instituteAddress.wait();
-      console.log(instituteAddress);
-      
+      const tx = await keepItSafeContract?.addInstitute(universityName, universityLocation, _domain);
+      await tx.wait();
+
     } else {
       console.log("User email is undefined");
     }
