@@ -32,6 +32,7 @@ export default function Home() {
 
   const getRoles = useCallback(async () => {
     const role = await keepItSafeContract?.getYourRole();
+    await role.wait();
     setRoles(role);
   }, [keepItSafeContract]);
 
