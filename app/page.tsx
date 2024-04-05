@@ -100,7 +100,7 @@ export default function Home() {
               ? wallet?.address.substring(0, 8) +
                 "..." +
                 wallet?.address.substring(36, wallet?.address.length)
-              : "Complete your profile now"}
+              : "Verify your email now"}
           </span>
         </button>
       </motion.div>

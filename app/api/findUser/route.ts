@@ -17,7 +17,7 @@ export async function GET(request: Request) {
   });
 
   if (user) {
-    return NextResponse.json({ isUniversity: user.isUniversity }, { status: 200 });
+    return NextResponse.json({ isUniversity: user.isUniversity, isProfileComplete: user.isProfileComplete }, { status: 200 });
   } else {
     return NextResponse.json({ message: "User not found" }, { status: 404 })
   }
