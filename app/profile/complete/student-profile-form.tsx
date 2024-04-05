@@ -6,7 +6,7 @@ export default function StudentProfileForm() {
   const [studentName, setStudentName] = useState<String>();
   console.log(studentName);
   const submitDetails = () => {
-
+    //profile complete api call to add
   }
   return (
     <div className="relative flex flex-col  h-[100vh] items-center mt-56 mx-10">
