@@ -7,13 +7,13 @@ import UniversityProfileForm from "./university-profile-form";
 import StudentProfileForm from "./student-profile-form";
 
 export default function CompleteProfile() {
-    const { wallets } = useWallets();
-  const wallet = wallets[0];
+  const { wallets } = useWallets();
   const [isUniversity, setIsUniversity] = useState<Boolean>(false);
   const [isProfileComplete, setIsProfileComplete] = useState<Boolean>(false);
   const [isLoading, setIsLoading] = useState<Boolean>(false);
 
   useEffect(() => {
+  const wallet = wallets[0];
     setIsLoading(true);
     axios.get(`/api/findUser?address=${wallet?.address}`).then(
       (response) => {
