@@ -1,6 +1,13 @@
 "use client";
 
-import { Button, Card, CardBody, Image, CardFooter, CircularProgress } from "@nextui-org/react";
+import {
+  Button,
+  Card,
+  CardBody,
+  Image,
+  CardFooter,
+  CircularProgress,
+} from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import { FaCheck } from "react-icons/fa";
@@ -9,6 +16,7 @@ import { useKeepItSafeContract } from "@/hooks/useKeepItSafe";
 import { useWallets, usePrivy } from "@privy-io/react-auth";
 
 export default function StudentProfile() {
+  const [time, setTime] = useState(0);
   const router = useRouter();
   const { keepItSafeContract } = useKeepItSafeContract();
   const { ready, authenticated, login, user, linkEmail } = usePrivy();
@@ -16,6 +24,7 @@ export default function StudentProfile() {
   const [gotDocs, setGotDocs] = useState<any>();
   const [idCardPresent, setIdCardPresent] = useState(false);
   const [studentDetails, setStudentDetails] = useState();
+  const [idCardDoc, setIdCardDoc] = useState<any>();
   let idCardHash = "";
 
   // const GetIpfsUrlFromPinata = (pinataUrl: any) => {
@@ -29,6 +38,8 @@ export default function StudentProfile() {
   useEffect(() => {
     const getDocsForStudent = async () => {
       if (keepItSafeContract) {
+        const currTime = await keepItSafeContract.time();
+        setTime(parseInt(currTime));
         const studentDocs = await keepItSafeContract.getStudentDocs();
         setGotDocs(studentDocs);
         studentDocs.map((doc: any, id: any) => {
@@ -36,28 +47,43 @@ export default function StudentProfile() {
             if (proj.value === doc[0]) {
               proj.exists = true;
               proj.img = `${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${doc.ipfsHash}?${process.env.NEXT_PUBLIC_TOKEN}`;
-              console.log(proj.img);
             }
             if (doc[0] === "idcard") {
-              console.log(doc)
+              console.log(parseInt(doc.expiresIn));
+              setIdCardDoc(doc);
               idCardHash = doc.ipfsHash;
               setIdCardPresent(true);
             }
-          })
-        }
-        )
+          });
+        });
       }
-    }
+    };
     const getStudentDetails = async () => {
       if (keepItSafeContract) {
         const studentDetails = await keepItSafeContract.getStudentDetails(wallets[0].address);
         setStudentDetails(studentDetails);
       }
-    }
+    };
     getDocsForStudent();
     getStudentDetails();
   }, []);
-  
+
+  useEffect(() => {
+    console.log("Working?????");
+    let countDownInterval: any;
+    if (idCardDoc?.expiresIn) {
+      console.log(parseInt(idCardDoc.expiresIn));
+      countDownInterval = setInterval(() => {
+        setTime(prevTime => prevTime + 1);
+      }, 1000);
+    }
+    return () => {
+      if (countDownInterval) {
+        clearInterval(countDownInterval)
+      }
+    }
+  }, [time, idCardDoc?.expiresIn])
+
   return (
     // <div className="h-[100vh] flex justify-center items-center flex-col">
     //   <div className="mb-[1%]">
@@ -69,18 +95,18 @@ export default function StudentProfile() {
     //     </div>
     //   </div>
     // </div>
-    <div className="h-[100vh] flex flex-col">
-      <div className="text-6xl mt-[15%] flex-start ml-[20%]">
-        {`${studentDetails ? studentDetails[0] : <CircularProgress />}'s documents`}
+    <div className="h-[50rem] mt-16 w-full dark:bg-black bg-white  dark:bg-grid-white/[0.2] bg-grid-black/[0.2] relative flex flex-col items-center justify-center">
+      <div className="absolute pointer-events-none inset-0 flex items-center justify-center dark:bg-black bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
+      <div className="text-4xl mt-[15%] sm:text-7xl font-bold relative z-20 bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-neutral-500 py-5">
+        {`${
+          studentDetails ? studentDetails[0] : <CircularProgress />
+        }'s documents`}
+        {/* Your documents */}
       </div>
       <div className=" text-4xl mt-[5%] flex-start ml-[20%]">
-        <div>Expires in</div>
+        <div>Expires in {idCardDoc?.expiresIn ? parseInt(idCardDoc.expiresIn) - parseInt(time) : 0}</div>
         <div>
-          <Card
-            shadow="sm"
-            isPressable
-            className="mt-5"
-          >
+          <Card shadow="sm" isPressable className="mt-5">
             <CardBody className="overflow-visible p-0">
               <Image
                 shadow="sm"
@@ -92,24 +118,26 @@ export default function StudentProfile() {
             </CardBody>
             <CardFooter className="text-small justify-between">
               <b>{"ID Card"}</b>
-              <Button color={idCardPresent ? 'success' : 'danger'} isIconOnly onPress={() => {
-                if (!idCardPresent) {
-                  router.push("/request")
-                }
-              }}>{idCardPresent ? <FaCheck color="white" /> : <FaPlus />}</Button>
+              <Button
+                color={idCardPresent ? "success" : "danger"}
+                isIconOnly
+                onPress={() => {
+                  if (!idCardPresent) {
+                    router.push("/request");
+                  }
+                }}
+              >
+                {idCardPresent ? <FaCheck color="white" /> : <FaPlus />}
+              </Button>
             </CardFooter>
           </Card>
         </div>
       </div>
-      <div className=" text-4xl mt-[3%] flex-start ml-[20%]">
+      <div className=" text-4xl mt-[3%] flex-start mb-[10%]">
         <div>Permanent documents</div>
         <div className="flex flex-row gap-5 mt-5">
           {projects.map((item, index) => (
-            <Card
-              shadow="sm"
-              key={index}
-              isPressable
-            >
+            <Card shadow="sm" key={index} isPressable>
               <CardBody className="overflow-visible p-0">
                 <Image
                   shadow="sm"
@@ -121,11 +149,17 @@ export default function StudentProfile() {
               </CardBody>
               <CardFooter className="text-small justify-between">
                 <b>{item.title}</b>
-                <Button color={item.exists ? 'success' : 'danger'} isIconOnly onPress={() => {
-                  if (!item.exists) {
-                    router.push("/request")
-                  }
-                }}>{item.exists ? <FaCheck color="white" /> : <FaPlus />}</Button>
+                <Button
+                  color={item.exists ? "success" : "danger"}
+                  isIconOnly
+                  onPress={() => {
+                    if (!item.exists) {
+                      router.push("/request");
+                    }
+                  }}
+                >
+                  {item.exists ? <FaCheck color="white" /> : <FaPlus />}
+                </Button>
               </CardFooter>
             </Card>
           ))}
@@ -135,7 +169,8 @@ export default function StudentProfile() {
   );
 }
 
-let defaultURL = "https://cdn.britannica.com/86/170586-050-AB7FEFAE/Taj-Mahal-Agra-India.jpg"
+let defaultURL =
+  "https://cdn.britannica.com/86/170586-050-AB7FEFAE/Taj-Mahal-Agra-India.jpg";
 
 export const projects = [
   {
@@ -143,23 +178,23 @@ export const projects = [
     description:
       "A technology company that builds economic infrastructure for the internet.",
     img: defaultURL,
-    value: 'lor',
-    exists: false
+    value: "lor",
+    exists: false,
   },
   {
     title: "Degree",
     description:
       "A streaming service that offers a wide variety of award-winning TV shows, movies, anime",
     img: defaultURL,
-    value: 'degree',
-    exists: false
+    value: "degree",
+    exists: false,
   },
   {
     title: "Gradesheet",
     description:
       "A multinational technology company that specializes in Internet-related services and products.",
     img: defaultURL,
-    value: 'gradesheet',
-    exists: false
+    value: "gradesheet",
+    exists: false,
   },
 ];

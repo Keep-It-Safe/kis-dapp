@@ -28,7 +28,7 @@ function Navbar({ className }: { className?: string }) {
 
   return (
     <div
-      className={cn("fixed top-10 inset-x-0 max-w-4xl mx-auto z-50", className)}
+      className={cn("fixed top-10 inset-x-0 max-w-5xl mx-auto z-50", className)}
     >
       <Menu setActive={setActive}>
         <button>
@@ -50,14 +50,16 @@ function Navbar({ className }: { className?: string }) {
             Profile
           </Link>
         </button>
-        {/* <Link href="/works">About</Link> */}
+        <button>
+          <Link href="/about">About</Link>
+        </button>
         <button
           onClick={shouldLogin ? login : logoutFunction}
-          className={`px-8 py-2 rounded-full bg-gradient-to-b ${
+          className={`px-8 py-2 rounded-full  ${
             shouldLogin
-              ? "from-blue-500 to-blue-600"
-              : " from-red-500 to-red-600"
-          } text-white focus:ring-2 focus:ring-blue-400 hover:shadow-xl transition duration-200`}
+              ? "bg-gradient-to-b from-blue-500 to-blue-600 text-white"
+              : "border-blue-500 text-blue-500 border-2"
+          }  focus:ring-2 focus:ring-blue-400 hover:shadow-xl transition duration-200`}
         >
           {shouldLogin ? "Login" : "Logout"}
         </button>
