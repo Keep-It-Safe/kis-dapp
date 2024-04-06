@@ -7,7 +7,7 @@ import { useKeepItSafeContract } from "@/hooks/useKeepItSafe";
 import { useWallets, usePrivy } from "@privy-io/react-auth";
 import { CircularProgress } from "@nextui-org/react";
 
-export default function GridBackgroundDemo() {
+export default function RaiseRequest() {
   const [selectedValue, setselectedValue] = useState<string | null>(null);
   const { keepItSafeContract } = useKeepItSafeContract();
   const { wallets } = useWallets();
@@ -102,7 +102,7 @@ export default function GridBackgroundDemo() {
       {/* <p className="text-2xl sm:text-4xl font-bold relative z-20 bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-neutral-500 py-8">
       Raise a document request here
       </p> */}
-      <div className="max-w-5xl mx-auto px-8 mt-1">
+      <div className="max-w-8xl mx-auto px-8 mt-1">
         <HoverEffect
           items={projects}
           handleSelect={handleSelect}
@@ -110,7 +110,7 @@ export default function GridBackgroundDemo() {
         />
       </div>
       <div className="flex flex-col-reverse">
-        <Button color="secondary" onClick={handleSubmit}>
+        <Button color="secondary" size="lg" onClick={handleSubmit}>
           Submit
         </Button>
       </div>
