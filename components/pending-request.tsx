@@ -24,6 +24,8 @@ export default function PendingRequest() {
           };
         }));
         console.log(updatedRequests);
+        console.log(updatedRequests[0].studentDetails[0]);
+        
         
         // setRequests(updatedRequests);
       }
