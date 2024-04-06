@@ -39,6 +39,12 @@ export default function PendingRequest() {
     onClose: onClose2,
   } = useDisclosure();
 
+  const submitRequest = () => {
+    keepItSafeContract?.approveDocumentRequest(selectedproject?.studentAddress, selectedproject?.docType, cid, expiresIn);
+    onClose();
+  }
+
+
   useEffect(()=>{
     const getStudentsRequests = async() => {
       if(keepItSafeContract){
@@ -97,10 +103,115 @@ export default function PendingRequest() {
   };
 
   return (
-    <div className="h-[100vh] flex justify-center items-center flex-col mx-10">
-      {studentRequests?.map((project: any, index: any) => (
+    // <div className="h-[100vh] flex justify-center items-center flex-col mx-10">
+    //   {studentRequests?.map((project: any, index: any) => (
+    //     <Card
+    //       className="w-full mt-4 p-3"
+    //       shadow="sm"
+    //       key={index}
+    //       isPressable
+    //       onPress={() => console.log("item pressed")}
+    //     >
+    //       <CardHeader className="justify-between">
+    //         <div>{project.docType}</div>
+    //         <div>{project?.studentDetails[0]}</div>
+    //       </CardHeader>
+    //       <CardBody className="flex flex-row-reverse gap-2">
+    //         <Button
+    //           color="success"
+    //           variant="flat"
+    //           onClick={() => changeHandler(project)}
+    //           onPress={project.docType !== "idcard" ? onOpen : onOpen2}
+    //         >
+    //           Approve
+    //         </Button>
+    //         <Button color="danger" variant="flat">
+    //           Reject
+    //         </Button>
+    //       </CardBody>
+    //     </Card>
+    //   ))}
+    //   <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
+    //     <ModalContent>
+    //       {(onClose) => (
+    //         <>
+    //           <ModalHeader className="flex flex-col gap-1">
+    //             Upload document
+    //           </ModalHeader>
+    //           <ModalBody>
+    //             <Input
+    //               type="file"
+    //               autoFocus
+    //               label="Image"
+    //               placeholder="Upload document"
+    //               variant="bordered"
+    //               ref={inputFile}
+    //               onChange={handleChange}
+    //             />
+    //           </ModalBody>
+    //           <ModalFooter>
+    //             <Button
+    //               color="primary"
+    //               disabled={uploading}
+    //               onClick={submitRequest}
+    //             >
+    //               {uploading ? "Uploading..." : "Upload Your Document to IPFS"}
+    //             </Button>
+    //           </ModalFooter>
+    //         </>
+    //       )}
+    //     </ModalContent>
+    //   </Modal>
+    //   <Modal
+    //     isOpen={isOpen2}
+    //     onOpenChange={onOpenChange2}
+    //     placement="top-center"
+    //   >
+    //     <ModalContent>
+    //       {(onClose2) => (
+    //         <>
+    //           <ModalHeader className="flex flex-col gap-1">
+    //             Upload document
+    //           </ModalHeader>
+    //           <ModalBody>
+    //             <Input
+    //               type="file"
+    //               autoFocus
+    //               placeholder="Upload document"
+    //               variant="bordered"
+    //               ref={inputFile}
+    //               onChange={handleChange}
+    //             />
+    //             <Input
+    //               type="text"
+    //               placeholder="Expires In"
+    //               ref={inputExpiresIn}
+    //               onChange={handleChange2}
+    //             />
+    //           </ModalBody>
+    //           <ModalFooter>
+    //             <Button
+    //               color="primary"
+    //               disabled={uploading}
+    //               onClick={submitRequest}
+    //             >
+    //               {uploading ? "Uploading..." : "Upload Your Document to IPFS"}
+    //             </Button>
+    //           </ModalFooter>
+    //         </>
+    //       )}
+    //     </ModalContent>
+    //   </Modal>
+    // </div>
+    <div className="h-[100vh] w-full dark:bg-black bg-white  dark:bg-grid-white/[0.2] bg-grid-black/[0.2] relative flex flex-col items-center ">
+      <div className="absolute pointer-events-none inset-0 flex items-center justify-center dark:bg-black bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
+      <p className="mt-[10%] mb-5 text-4xl sm:text-7xl font-bold relative z-20 bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-neutral-500 py-1">
+        Pending Requests
+      </p>
+      <div className="h-[100vh] w-[50%] flex items-center flex-col">
+       {studentRequests?.map((project: any, index: any) => (
         <Card
-          className="w-full mt-4 p-3"
+          className="w-full mt-2 p-3"
           shadow="sm"
           key={index}
           isPressable
@@ -196,6 +307,7 @@ export default function PendingRequest() {
           )}
         </ModalContent>
       </Modal>
+    </div>
     </div>
   );
 }
