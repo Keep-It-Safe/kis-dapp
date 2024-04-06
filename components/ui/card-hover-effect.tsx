@@ -12,6 +12,7 @@ export const HoverEffect = ({
 }: {
   items: {
     value: string;
+    title: string;
     description: string;
     link: string;
   }[];
@@ -63,39 +64,39 @@ export const HoverEffect = ({
 };
 
 export const Card = ({
-  className,
-  children,
-  onSelect,
-  selected,
-}: {
-  className?: string;
-  children: React.ReactNode;
-  onSelect: () => void;
-  selected: boolean;
-}) => {
-  return (
-    <div
-      className={cn(
-        "rounded-2xl h-full w-full p-4 overflow-hidden bg-black border border-transparent dark:border-white/[0.2] group-hover:border-slate-700 relative z-20",
-        className
-      )}
-    >
-      <div className="flex-col">
-        <div className="">{children}</div>
-        <div className="">
-          <Button
-            className="rounded-md"
-            variant="flat"
-            color={selected ? "success" : "danger"}
-            onClick={onSelect}
-          >
-            {selected ? "Selected" : "Select"}
-          </Button>
+    className,
+    children,
+    onSelect,
+    selected,
+  }: {
+    className?: string;
+    children: React.ReactNode;
+    onSelect: () => void;
+    selected: boolean;
+  }) => {
+    return (
+      <div
+        className={cn(
+          "rounded-2xl h-full w-full p-4 overflow-hidden bg-black border border-transparent dark:border-white/[0.2] group-hover:border-slate-700 relative flex flex-col justify-between", // added flex styles
+          className
+        )}
+        style={{ width: '350px', height: '250px' }}
+      >
+        <div>
+          <div className="p-4">{children}</div>
         </div>
+        <Button
+          className="py-1 px-3 rounded-md"
+          variant="flat"
+          color={selected ? "success" : "danger"}
+          onClick={onSelect}
+        >
+          {selected ? "Selected" : "Select"}
+        </Button>
       </div>
-    </div>
-  );
-};
+    );
+  };
+  
 
 export const Cardvalue = ({
   className,
@@ -105,7 +106,7 @@ export const Cardvalue = ({
   children: React.ReactNode;
 }) => {
   return (
-    <h4 className={cn("text-zinc-100 font-bold tracking-wide", className)}>
+    <h4 className={cn("text-zinc-100 font-bold tracking-wide mt-4", className)}>
       {children}
     </h4>
   );
@@ -121,7 +122,7 @@ export const CardDescription = ({
   return (
     <p
       className={cn(
-        "text-zinc-400 tracking-wide leading-relaxed text-sm",
+        "mt-8 text-zinc-400 tracking-wide leading-relaxed text-sm",
         className
       )}
     >
