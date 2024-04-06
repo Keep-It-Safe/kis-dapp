@@ -38,8 +38,8 @@ export default function StudentProfileForm() {
       );
       const instituteAddress = await keepItSafeContract?.getInstituteAddress(_domain);
       console.log(instituteAddress);
-      const studentDet = await keepItSafeContract?.getStudentDetails(wallet.address);
-      console.log(studentDet);
+      // const studentDet = await keepItSafeContract?.getStudentDetails(wallet.address);
+      // console.log(studentDet);
       
       const tx = keepItSafeContract?.addStudent(studentName, instituteAddress, _domain);
       console.log("Student Registered Success!!!");
