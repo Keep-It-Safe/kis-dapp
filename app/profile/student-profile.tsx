@@ -170,7 +170,7 @@ export default function StudentProfile() {
 }
 
 let defaultURL =
-  "https://cdn.britannica.com/86/170586-050-AB7FEFAE/Taj-Mahal-Agra-India.jpg";
+  "https://placehold.co/600x400?text=Placeholder"
 
 export const projects = [
   {
