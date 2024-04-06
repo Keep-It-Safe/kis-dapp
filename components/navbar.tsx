@@ -47,7 +47,7 @@ function Navbar({ className }: { className?: string }) {
         >
           Profile
         </Link>
-        <Link href="/works">Works</Link>
+        <Link href="/works">About</Link>
         <button
           onClick={shouldLogin ? login : logoutFunction}
           className={shouldLogin ? "text-green-300" : "text-red-300"}

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useWallets } from "@privy-io/react-auth";
 import axios from "axios";
-import UniversityProfile from "./student-profile";
+import UniversityProfile from "./university-profile";
 import StudentProfile from "./student-profile";
 import { CircularProgress } from "@nextui-org/react";
 export default function AuroraBackgroundDemo() {
