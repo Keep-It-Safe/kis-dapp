@@ -1,10 +1,22 @@
 "use client";
 
 import { HoverEffect } from "@/components/ui/card-hover-effect";
-import { useState, useEffect, useRef} from "react";
+import { useState, useEffect, useRef } from "react";
 import { useKeepItSafeContract } from "@/hooks/useKeepItSafe";
 import { useWallets, usePrivy } from "@privy-io/react-auth";
-import { Card, CardBody, Button, CardHeader, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Input, useDisclosure } from "@nextui-org/react";
+import {
+  Card,
+  CardBody,
+  Button,
+  CardHeader,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Input,
+  useDisclosure,
+} from "@nextui-org/react";
 
 export default function PendingRequest() {
   const { keepItSafeContract } = useKeepItSafeContract();
@@ -19,12 +31,19 @@ export default function PendingRequest() {
   const inputFile = useRef(null);
   const inputExpiresIn = useRef(null);
 
-  const {isOpen, onOpen, onOpenChange, onClose} = useDisclosure();
-  const {isOpen:isOpen2, onOpen:onOpen2, onOpenChange: onOpenChange2, onClose: onClose2} = useDisclosure();
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  const {
+    isOpen: isOpen2,
+    onOpen: onOpen2,
+    onOpenChange: onOpenChange2,
+    onClose: onClose2,
+  } = useDisclosure();
+
   const submitRequest = () => {
     keepItSafeContract?.approveDocumentRequest(selectedproject?.studentAddress, selectedproject?.docType, cid, expiresIn);
     onClose();
   }
+
 
   useEffect(()=>{
     const getStudentsRequests = async() => {
@@ -41,9 +60,9 @@ export default function PendingRequest() {
         }));
         setStudentRequests(updatedRequests);
       }
-    }
+    };
     getStudentsRequests();
-  },[])
+  }, []);
 
   async function getStudentDetails(studentAddress: any) {
     const studentDetails = await keepItSafeContract?.getStudentDetails(studentAddress);
@@ -69,10 +88,10 @@ export default function PendingRequest() {
     }
   };
 
-  const changeHandler = (project: any) =>{
-    console.log(project);    
-    setSelectedProject(project)
-  }
+  const changeHandler = (project: any) => {
+    console.log(project);
+    setSelectedProject(project);
+  };
 
   const handleChange = (e: any) => {
     setFile(e.target.files[0]);
@@ -80,19 +99,135 @@ export default function PendingRequest() {
   };
 
   const handleChange2 = (e: any) => {
-    setExpiresIn(e.target.value)
-  }
+    setExpiresIn(e.target.value);
+  };
 
   return (
-    <div className="h-[100vh] flex justify-center items-center flex-col mx-10">
-      {studentRequests?.map((project: any, index: any) => (
-        <Card className="w-full mt-4 p-3" shadow="sm" key={index} isPressable onPress={() => console.log("item pressed")}>
+    // <div className="h-[100vh] flex justify-center items-center flex-col mx-10">
+    //   {studentRequests?.map((project: any, index: any) => (
+    //     <Card
+    //       className="w-full mt-4 p-3"
+    //       shadow="sm"
+    //       key={index}
+    //       isPressable
+    //       onPress={() => console.log("item pressed")}
+    //     >
+    //       <CardHeader className="justify-between">
+    //         <div>{project.docType}</div>
+    //         <div>{project?.studentDetails[0]}</div>
+    //       </CardHeader>
+    //       <CardBody className="flex flex-row-reverse gap-2">
+    //         <Button
+    //           color="success"
+    //           variant="flat"
+    //           onClick={() => changeHandler(project)}
+    //           onPress={project.docType !== "idcard" ? onOpen : onOpen2}
+    //         >
+    //           Approve
+    //         </Button>
+    //         <Button color="danger" variant="flat">
+    //           Reject
+    //         </Button>
+    //       </CardBody>
+    //     </Card>
+    //   ))}
+    //   <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
+    //     <ModalContent>
+    //       {(onClose) => (
+    //         <>
+    //           <ModalHeader className="flex flex-col gap-1">
+    //             Upload document
+    //           </ModalHeader>
+    //           <ModalBody>
+    //             <Input
+    //               type="file"
+    //               autoFocus
+    //               label="Image"
+    //               placeholder="Upload document"
+    //               variant="bordered"
+    //               ref={inputFile}
+    //               onChange={handleChange}
+    //             />
+    //           </ModalBody>
+    //           <ModalFooter>
+    //             <Button
+    //               color="primary"
+    //               disabled={uploading}
+    //               onClick={submitRequest}
+    //             >
+    //               {uploading ? "Uploading..." : "Upload Your Document to IPFS"}
+    //             </Button>
+    //           </ModalFooter>
+    //         </>
+    //       )}
+    //     </ModalContent>
+    //   </Modal>
+    //   <Modal
+    //     isOpen={isOpen2}
+    //     onOpenChange={onOpenChange2}
+    //     placement="top-center"
+    //   >
+    //     <ModalContent>
+    //       {(onClose2) => (
+    //         <>
+    //           <ModalHeader className="flex flex-col gap-1">
+    //             Upload document
+    //           </ModalHeader>
+    //           <ModalBody>
+    //             <Input
+    //               type="file"
+    //               autoFocus
+    //               placeholder="Upload document"
+    //               variant="bordered"
+    //               ref={inputFile}
+    //               onChange={handleChange}
+    //             />
+    //             <Input
+    //               type="text"
+    //               placeholder="Expires In"
+    //               ref={inputExpiresIn}
+    //               onChange={handleChange2}
+    //             />
+    //           </ModalBody>
+    //           <ModalFooter>
+    //             <Button
+    //               color="primary"
+    //               disabled={uploading}
+    //               onClick={submitRequest}
+    //             >
+    //               {uploading ? "Uploading..." : "Upload Your Document to IPFS"}
+    //             </Button>
+    //           </ModalFooter>
+    //         </>
+    //       )}
+    //     </ModalContent>
+    //   </Modal>
+    // </div>
+    <div className="h-[100vh] w-full dark:bg-black bg-white  dark:bg-grid-white/[0.2] bg-grid-black/[0.2] relative flex flex-col items-center ">
+      <div className="absolute pointer-events-none inset-0 flex items-center justify-center dark:bg-black bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
+      <p className="mt-[10%] mb-5 text-4xl sm:text-7xl font-bold relative z-20 bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-neutral-500 py-1">
+        Pending Requests
+      </p>
+      <div className="h-[100vh] w-[50%] flex items-center flex-col">
+       {studentRequests?.map((project: any, index: any) => (
+        <Card
+          className="w-full mt-2 p-3"
+          shadow="sm"
+          key={index}
+          isPressable
+          onPress={() => console.log("item pressed")}
+        >
           <CardHeader className="justify-between">
             <div>{project.docType}</div>
             <div>{project?.studentDetails[0]}</div>
           </CardHeader>
           <CardBody className="flex flex-row-reverse gap-2">
-            <Button color="success" variant="flat" onClick={() =>changeHandler(project)} onPress={ project.docType!=="idcard" ? onOpen : onOpen2}>
+            <Button
+              color="success"
+              variant="flat"
+              onClick={() => changeHandler(project)}
+              onPress={project.docType !== "idcard" ? onOpen : onOpen2}
+            >
               Approve
             </Button>
             <Button color="danger" variant="flat">
@@ -105,7 +240,9 @@ export default function PendingRequest() {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">Upload document</ModalHeader>
+              <ModalHeader className="flex flex-col gap-1">
+                Upload document
+              </ModalHeader>
               <ModalBody>
                 <Input
                   type="file"
@@ -113,48 +250,64 @@ export default function PendingRequest() {
                   label="Image"
                   placeholder="Upload document"
                   variant="bordered"
-                  ref={inputFile} 
+                  ref={inputFile}
                   onChange={handleChange}
                 />
               </ModalBody>
               <ModalFooter>
-                <Button color="primary" disabled={uploading} onClick={submitRequest}>
-                {uploading ? "Uploading..." : "Upload Your Document to IPFS"}
+                <Button
+                  color="primary"
+                  disabled={uploading}
+                  onClick={submitRequest}
+                >
+                  {uploading ? "Uploading..." : "Upload Your Document to IPFS"}
                 </Button>
               </ModalFooter>
             </>
           )}
         </ModalContent>
       </Modal>
-      <Modal isOpen={isOpen2} onOpenChange={onOpenChange2} placement="top-center">
+      <Modal
+        isOpen={isOpen2}
+        onOpenChange={onOpenChange2}
+        placement="top-center"
+      >
         <ModalContent>
           {(onClose2) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">Upload document</ModalHeader>
+              <ModalHeader className="flex flex-col gap-1">
+                Upload document
+              </ModalHeader>
               <ModalBody>
                 <Input
                   type="file"
                   autoFocus
                   placeholder="Upload document"
                   variant="bordered"
-                  ref={inputFile} 
-                  onChange={handleChange2}
+                  ref={inputFile}
+                  onChange={handleChange}
                 />
                 <Input
                   type="text"
                   placeholder="Expires In"
                   ref={inputExpiresIn}
+                  onChange={handleChange2}
                 />
               </ModalBody>
               <ModalFooter>
-                <Button color="primary" disabled={uploading} onClick={submitRequest}>
-                {uploading ? "Uploading..." : "Upload Your Document to IPFS"}
+                <Button
+                  color="primary"
+                  disabled={uploading}
+                  onClick={submitRequest}
+                >
+                  {uploading ? "Uploading..." : "Upload Your Document to IPFS"}
                 </Button>
               </ModalFooter>
             </>
           )}
         </ModalContent>
       </Modal>
+    </div>
     </div>
   );
 }
