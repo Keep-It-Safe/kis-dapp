@@ -80,9 +80,9 @@ export const Card = ({
         className
       )}
     >
-      <div className="z-50 flex-col h-full">
-        <div className="p-4 flex-col">{children}</div>
-        <div className="flex-col h-full">
+      <div className="flex-col">
+        <div className="">{children}</div>
+        <div className="">
           <Button
             className="rounded-md"
             variant="flat"
@@ -105,7 +105,7 @@ export const Cardvalue = ({
   children: React.ReactNode;
 }) => {
   return (
-    <h4 className={cn("text-zinc-100 font-bold tracking-wide mt-4", className)}>
+    <h4 className={cn("text-zinc-100 font-bold tracking-wide", className)}>
       {children}
     </h4>
   );
@@ -121,7 +121,7 @@ export const CardDescription = ({
   return (
     <p
       className={cn(
-        "mt-8 text-zinc-400 tracking-wide leading-relaxed text-sm",
+        "text-zinc-400 tracking-wide leading-relaxed text-sm",
         className
       )}
     >

@@ -16,6 +16,7 @@ export default function StudentProfile() {
   const [gotDocs, setGotDocs] = useState<any>();
   const [idCardPresent, setIdCardPresent] = useState(false);
   const [studentDetails, setStudentDetails] = useState();
+  let idCardHash = "";
 
   // const GetIpfsUrlFromPinata = (pinataUrl: any) => {
   //   if (pinataUrl === null) return;
@@ -35,10 +36,11 @@ export default function StudentProfile() {
             if (proj.value === doc[0]) {
               proj.exists = true;
               proj.img = `${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${doc.ipfsHash}?${process.env.NEXT_PUBLIC_TOKEN}`;
-              // proj.image = GetIpfsUrlFromPinata(doc.ipfsHash)
               console.log(proj.img);
             }
             if (doc[0] === "idcard") {
+              console.log(doc)
+              idCardHash = doc.ipfsHash;
               setIdCardPresent(true);
             }
           })
@@ -48,14 +50,14 @@ export default function StudentProfile() {
     }
     const getStudentDetails = async () => {
       if (keepItSafeContract) {
-        console.log(wallets[0]);
         const studentDetails = await keepItSafeContract.getStudentDetails(wallets[0].address);
         setStudentDetails(studentDetails);
       }
     }
     getDocsForStudent();
     getStudentDetails();
-  }, [])
+  }, []);
+  
   return (
     // <div className="h-[100vh] flex justify-center items-center flex-col">
     //   <div className="mb-[1%]">
@@ -85,7 +87,7 @@ export default function StudentProfile() {
                 radius="lg"
                 alt={"ID Card"}
                 className="w-full object-cover h-[140px]"
-                src={defaultURL}
+                src={idCardPresent ? `${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${idCardHash}?${process.env.NEXT_PUBLIC_TOKEN}` : defaultURL}
               />
             </CardBody>
             <CardFooter className="text-small justify-between">
