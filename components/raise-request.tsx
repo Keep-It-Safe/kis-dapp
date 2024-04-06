@@ -69,28 +69,28 @@ export default function RaiseRequest() {
     {
       title: "ID Card",
       description:
-        "A technology company that builds economic infrastructure for the internet.",
+        "Your college issued Identity Card with a pre-fixed expiry timer.",
       link: "",
       value: "idcard",
     },
     {
       title: "Degree",
       description:
-        "A streaming service that offers a wide variety of award-winning TV shows, movies, anime",
+        "This will be issued after succesful completion of your enrolled programme/degree.",
       link: "",
       value: "degree",
     },
     {
-      title: "Marksheet",
+      title: "Gradesheet",
       description:
-        "A multinational technology company that specializes in Internet-related services and products.",
+        "A consolidated marksheet with all your GPA for all the semesters.",
       link: "",
       value: "gradesheet",
     },
     {
       title: "Letter Of Recommendation",
       description:
-        "Another multinational technology company that specializes in Internet-related services and products.",
+        "You might need a fancy LOR to apply in your favorite company!",
       link: "",
       value: "lor",
     },
