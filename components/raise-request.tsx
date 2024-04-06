@@ -12,7 +12,7 @@ export default function GridBackgroundDemo() {
   const { keepItSafeContract } = useKeepItSafeContract();
   const { wallets } = useWallets();
   const wallet = wallets[0];
-  const [studentDetails, setStudentDetails] = useState(null);
+  const [studentDetails, setStudentDetails] = useState<any>(null);
   const { ready, authenticated, login, user, linkEmail } = usePrivy();
 
   const handleSelect = (title: string) => {
@@ -97,7 +97,7 @@ export default function GridBackgroundDemo() {
     <div className="h-[50rem] mt-16 w-full dark:bg-black bg-white  dark:bg-grid-white/[0.2] bg-grid-black/[0.2] relative flex flex-col items-center justify-center">
       <div className="absolute pointer-events-none inset-0 flex items-center justify-center dark:bg-black bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
       <p className="text-4xl sm:text-7xl font-bold relative z-20 bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-neutral-500 py-5">
-        Hello, Dhrupad
+        Hello, {studentDetails ? studentDetails[0] : <CircularProgress/>}
       </p>
       {/* <p className="text-2xl sm:text-4xl font-bold relative z-20 bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-neutral-500 py-8">
       Raise a document request here
