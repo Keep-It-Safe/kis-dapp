@@ -15,14 +15,14 @@ export default function PendingRequest() {
   const [file, setFile] = useState("");
   const [cid, setCid] = useState("");
   const [uploading, setUploading] = useState(false);
-  const [selectedproject, setSelectedProject] = useState();
+  const [selectedproject, setSelectedProject] = useState<any>();
   const inputFile = useRef(null);
   const inputExpiresIn = useRef(null);
 
   const {isOpen, onOpen, onOpenChange, onClose} = useDisclosure();
   const {isOpen:isOpen2, onOpen:onOpen2, onOpenChange: onOpenChange2, onClose: onClose2} = useDisclosure();
   const submitRequest = () => {
-    keepItSafeContract.approveDocumentRequest(selectedproject.studentAddress, selectedproject.docType, cid, expiresIn);
+    keepItSafeContract?.approveDocumentRequest(selectedproject?.studentAddress, selectedproject?.docType, cid, expiresIn);
     onClose();
   }
 
