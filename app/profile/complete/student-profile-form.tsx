@@ -38,11 +38,11 @@ export default function StudentProfileForm() {
       );
       const instituteAddress = await keepItSafeContract?.getInstituteAddress(_domain);
       console.log(instituteAddress);
-      const studentDet = await keepItSafeContract?.getStudentDetails(wallet.address);
-      console.log(studentDet);
+      // const studentDet = await keepItSafeContract?.getStudentDetails(wallet.address);
+      // console.log(studentDet);
       
-      // const tx = keepItSafeContract?.addStudent(studentName, instituteAddress, _domain);
-      // await tx.wait();
+      const tx = keepItSafeContract?.addStudent(studentName, instituteAddress, _domain);
+      await tx.wait();
       console.log("Student Registered Success!!!");
     } else {
       console.log("User email is undefined");
