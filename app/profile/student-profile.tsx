@@ -9,6 +9,7 @@ import { useKeepItSafeContract } from "@/hooks/useKeepItSafe";
 import { useWallets, usePrivy } from "@privy-io/react-auth";
 
 export default function StudentProfile() {
+  const [time, setTime] = useState(0);
   const router = useRouter();
   const { keepItSafeContract } = useKeepItSafeContract();
   const { ready, authenticated, login, user, linkEmail } = usePrivy();
@@ -16,6 +17,7 @@ export default function StudentProfile() {
   const [gotDocs, setGotDocs] = useState<any>();
   const [idCardPresent, setIdCardPresent] = useState(false);
   const [studentDetails, setStudentDetails] = useState();
+  const [idCardDoc, setIdCardDoc] = useState();
   let idCardHash = "";
 
   // const GetIpfsUrlFromPinata = (pinataUrl: any) => {
@@ -29,6 +31,8 @@ export default function StudentProfile() {
   useEffect(() => {
     const getDocsForStudent = async () => {
       if (keepItSafeContract) {
+        const currTime = await keepItSafeContract.time();
+        setTime(parseInt(currTime));
         const studentDocs = await keepItSafeContract.getStudentDocs();
         setGotDocs(studentDocs);
         studentDocs.map((doc: any, id: any) => {
@@ -36,10 +40,10 @@ export default function StudentProfile() {
             if (proj.value === doc[0]) {
               proj.exists = true;
               proj.img = `${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${doc.ipfsHash}?${process.env.NEXT_PUBLIC_TOKEN}`;
-              console.log(proj.img);
             }
             if (doc[0] === "idcard") {
-              console.log(doc)
+              console.log(parseInt(doc.expiresIn));
+              setIdCardDoc(doc);
               idCardHash = doc.ipfsHash;
               setIdCardPresent(true);
             }
@@ -57,7 +61,23 @@ export default function StudentProfile() {
     getDocsForStudent();
     getStudentDetails();
   }, []);
-  
+
+  useEffect(() => {
+    console.log("Working?????");
+    let countDownInterval: any;
+    if (idCardDoc?.expiresIn) {
+      console.log(parseInt(idCardDoc.expiresIn));
+      countDownInterval = setInterval(() => {
+        setTime(prevTime => prevTime + 1);
+      }, 1000);
+    }
+    return () => {
+      if (countDownInterval) {
+        clearInterval(countDownInterval)
+      }
+    }
+  }, [time, idCardDoc?.expiresIn])
+
   return (
     // <div className="h-[100vh] flex justify-center items-center flex-col">
     //   <div className="mb-[1%]">
@@ -74,7 +94,7 @@ export default function StudentProfile() {
         {`${studentDetails ? studentDetails[0] : <CircularProgress />}'s documents`}
       </div>
       <div className=" text-4xl mt-[5%] flex-start ml-[20%]">
-        <div>Expires in</div>
+        <div>Expires in {idCardDoc?.expiresIn ? parseInt(idCardDoc.expiresIn) - parseInt(time) : 0}</div>
         <div>
           <Card
             shadow="sm"
