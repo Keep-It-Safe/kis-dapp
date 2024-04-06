@@ -73,10 +73,10 @@ export default function RaiseRequest() {
           isLoading: false,
           autoClose: 4000,
         });
-        // router.push("");
+        router.push("/profile");
       }
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.error(err);
       toast.error("Transaction Rejected", {
         position: 'top-center',
         autoClose: 4000,

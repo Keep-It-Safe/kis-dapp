@@ -4,6 +4,7 @@ import { HoverEffect } from "@/components/ui/card-hover-effect";
 import { useState, useEffect, useRef } from "react";
 import { useKeepItSafeContract } from "@/hooks/useKeepItSafe";
 import { useWallets, usePrivy } from "@privy-io/react-auth";
+import { toast, ToastContainer } from 'react-toastify';
 import {
   Card,
   CardBody,
@@ -40,20 +41,40 @@ export default function PendingRequest() {
   } = useDisclosure();
 
   const submitRequest = async () => {
-    const time = await keepItSafeContract.time();
-    let newExpiresIn = 0;
-    if (expiresIn !== 0) {
-      newExpiresIn = parseInt(time) + parseInt(expiresIn);
+    const id = toast.loading("Approving Request, Please wait!", {
+      position: 'top-center'
+    });
+    try {
+      const time = await keepItSafeContract.time();
+      let newExpiresIn = 0;
+      if (expiresIn !== 0) {
+        newExpiresIn = parseInt(time) + parseInt(expiresIn);
+      }
+      console.log(newExpiresIn);
+      const tx = await keepItSafeContract?.approveDocumentRequest(
+        selectedproject?.studentAddress,
+        selectedproject?.docType,
+        cid,
+        newExpiresIn
+      );
+      await tx.wait();
+      toast.update(id, {
+        render: "Approved Request Successfully",
+        type: "success",
+        position: 'top-center',
+        isLoading: false,
+        autoClose: 4000,
+      });
+      onClose();
     }
-    console.log(newExpiresIn);
-
-    await keepItSafeContract?.approveDocumentRequest(
-      selectedproject?.studentAddress,
-      selectedproject?.docType,
-      cid,
-      newExpiresIn
-    );
-    onClose();
+    catch (err) {
+      console.error(err);
+      toast.error("Transaction Rejected", {
+        position: 'top-center',
+        autoClose: 4000,
+      });
+      toast.dismiss(id);
+    }
   };
 
 
