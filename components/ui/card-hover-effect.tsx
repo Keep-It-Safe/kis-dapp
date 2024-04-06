@@ -11,12 +11,12 @@ export const HoverEffect = ({
   selectedItem,
 }: {
   items: {
-    title: string;
+    value: string;
     description: string;
     link: string;
   }[];
   className?: string;
-  handleSelect: (title: string) => void;
+  handleSelect: (value: string) => void;
   selectedItem: string | null;
 }) => {
   let [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -30,7 +30,7 @@ export const HoverEffect = ({
     >
       {items.map((item, idx) => (
         <div
-          key={item.title}
+          key={item.value}
           className="relative group block p-2 h-full w-full"
           onMouseEnter={() => setHoveredIndex(idx)}
           onMouseLeave={() => setHoveredIndex(null)}
@@ -50,10 +50,10 @@ export const HoverEffect = ({
             )}
           </AnimatePresence>
           <Card
-            onSelect={() => handleSelect(item.title)}
-            selected={selectedItem === item.title}
+            onSelect={() => handleSelect(item.value)}
+            selected={selectedItem === item.value}
           >
-            <CardTitle>{item.title}</CardTitle>
+            <Cardvalue>{item.value}</Cardvalue>
             <CardDescription>{item.description}</CardDescription>
           </Card>
         </div>
@@ -95,7 +95,7 @@ export const Card = ({
   );
 };
 
-export const CardTitle = ({
+export const Cardvalue = ({
   className,
   children,
 }: {
