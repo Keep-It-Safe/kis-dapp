@@ -77,13 +77,13 @@ export const Card = ({
   return (
     <div
       className={cn(
-        "rounded-2xl h-full w-full p-4 overflow-hidden bg-black border border-transparent dark:border-white/[0.2] group-hover:border-slate-700 relative z-20",
+        "rounded-2xl h-full w-full  overflow-hidden bg-black border border-transparent dark:border-white/[0.2] group-hover:border-slate-700 relative z-20",
         className
       )}
     >
       <div className="z-50 flex-col h-full">
-        <div className="p-4 flex-col">{children}</div>
-        <div className="flex-col h-full">
+        <div className="flex-col">{children}</div>
+        <div className="flex-col h-full" style={{ display:"flex", flexDirection: "column", alignItems: "center"}}>
           <Button
             className="rounded-md"
             variant="flat"

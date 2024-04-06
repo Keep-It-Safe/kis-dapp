@@ -86,7 +86,7 @@ export default function GridBackgroundDemo() {
     {
       title: "Letter Of Recommendation",
       description:
-        "You might need a fancy LOR to apply in your favorite company!",
+        "You might need a fancy Letter of Recommendation to apply in your favorite company!",
       link: "",
       value: "lor",
     },
