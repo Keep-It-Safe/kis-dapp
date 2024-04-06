@@ -5,6 +5,7 @@ import Link from "next/link";
 import { cn } from "@/utils/cn";
 import { usePrivy } from "@privy-io/react-auth";
 import { toast } from 'react-hot-toast';
+// import HowItWorks from "@/app/works/howItWorks";
 
 export function NavbarDemo() {
   return (
@@ -46,6 +47,7 @@ function Navbar({ className }: { className?: string }) {
         >
           Profile
         </Link>
+        <Link href="/works">Works</Link>
         <button
           onClick={shouldLogin ? login : logoutFunction}
           className={shouldLogin ? "text-green-300" : "text-red-300"}

@@ -98,7 +98,7 @@ export default function PendingRequest() {
             <div>{project?.studentDetails[0]}</div>
           </CardHeader>
           <CardBody className="flex flex-row-reverse gap-2">
-            <Button color="success" variant="flat" onClick={() =>changeHandler(project)} onPress={ project.docType!=="lor" ? onOpen : onOpen2}>
+            <Button color="success" variant="flat" onClick={() =>changeHandler(project)} onPress={ project.docType!=="idcard" ? onOpen : onOpen2}>
               Approve
             </Button>
             <Button color="danger" variant="flat">
