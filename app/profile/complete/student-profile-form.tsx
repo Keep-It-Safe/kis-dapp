@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input, Button } from "@nextui-org/react";
 import { useKeepItSafeContract } from "@/hooks/useKeepItSafe";
 import { usePrivy, useWallets } from "@privy-io/react-auth";

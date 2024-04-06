@@ -1,11 +1,30 @@
 "use client";
 
 import { Button, Card, CardBody, Image, CardFooter } from "@nextui-org/react";
+import { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa";
-import { useRouter } from "next/navigation"; 
+import { FaCheck } from "react-icons/fa";
+import { useRouter } from "next/navigation";
+import { useKeepItSafeContract } from "@/hooks/useKeepItSafe";
+import { useWallets, usePrivy } from "@privy-io/react-auth";
 
 export default function StudentProfile() {
-    const router = useRouter();
+  const router = useRouter();
+  const { keepItSafeContract } = useKeepItSafeContract();
+  const { ready, authenticated, login, user, linkEmail } = usePrivy();
+  const { wallets } = useWallets();
+
+  useEffect(() => {
+    const getDocsForStudent = async () => {
+      console.log("Hello Working??");
+      
+      if (keepItSafeContract) {
+        const studentDocs = await keepItSafeContract.getStudentDocs();
+        console.log(studentDocs); 
+      }
+      getDocsForStudent();
+    }
+  }, [])
   return (
     // <div className="h-[100vh] flex justify-center items-center flex-col">
     //   <div className="mb-[1%]">
@@ -40,7 +59,7 @@ export default function StudentProfile() {
             </CardBody>
             <CardFooter className="text-small justify-between">
               <b>{"ID Card"}</b>
-              <Button isIconOnly onPress={() => {router.push("/request")}}><FaPlus/></Button>
+              <Button isIconOnly onPress={() => { router.push("/request") }}><FaPlus /></Button>
             </CardFooter>
           </Card>
         </div>
@@ -65,7 +84,7 @@ export default function StudentProfile() {
               </CardBody>
               <CardFooter className="text-small justify-between">
                 <b>{item.title}</b>
-                <Button isIconOnly onPress={() => {router.push("/request")}}><FaPlus/></Button>
+                <Button isIconOnly onPress={() => { router.push("/request") }}><FaPlus /></Button>
               </CardFooter>
             </Card>
           ))}
@@ -81,26 +100,20 @@ export const projects = [
     description:
       "A technology company that builds economic infrastructure for the internet.",
     img: "https://cdn.britannica.com/86/170586-050-AB7FEFAE/Taj-Mahal-Agra-India.jpg",
+    value: 'lor'
   },
   {
     title: "Degree",
     description:
       "A streaming service that offers a wide variety of award-winning TV shows, movies, anime",
     img: "https://cdn.britannica.com/86/170586-050-AB7FEFAE/Taj-Mahal-Agra-India.jpg",
+    value: 'degree'
   },
   {
-    title: "Marksheet",
+    title: "Gradesheet",
     description:
       "A multinational technology company that specializes in Internet-related services and products.",
     img: "https://cdn.britannica.com/86/170586-050-AB7FEFAE/Taj-Mahal-Agra-India.jpg",
-  },
-];
-
-export const expiration = [
-  {
-    title: "ID Card",
-    description:
-      "A technology company that builds economic infrastructure for the internet.",
-    img: "https://cdn.britannica.com/86/170586-050-AB7FEFAE/Taj-Mahal-Agra-India.jpg",
+    value: 'gradesheet'
   },
 ];
