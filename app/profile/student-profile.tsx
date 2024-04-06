@@ -1,12 +1,61 @@
 "use client";
 
-import { Button, Card, CardBody, Image, CardFooter } from "@nextui-org/react";
+import { Button, Card, CardBody, Image, CardFooter, CircularProgress } from "@nextui-org/react";
+import { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import { FaCheck } from "react-icons/fa";
-import { useRouter } from "next/navigation"; 
+import { useRouter } from "next/navigation";
+import { useKeepItSafeContract } from "@/hooks/useKeepItSafe";
+import { useWallets, usePrivy } from "@privy-io/react-auth";
 
 export default function StudentProfile() {
-    const router = useRouter();
+  const router = useRouter();
+  const { keepItSafeContract } = useKeepItSafeContract();
+  const { ready, authenticated, login, user, linkEmail } = usePrivy();
+  const { wallets } = useWallets();
+  const [gotDocs, setGotDocs] = useState<any>();
+  const [idCardPresent, setIdCardPresent] = useState(false);
+  const [studentDetails, setStudentDetails] = useState();
+
+  // const GetIpfsUrlFromPinata = (pinataUrl: any) => {
+  //   if (pinataUrl === null) return;
+  //   var IPFSUrl = pinataUrl.split("/");
+  //   const lastIndex = IPFSUrl.length;
+  //   IPFSUrl = "https://ipfs.io/ipfs/" + IPFSUrl[lastIndex - 1];
+  //   return IPFSUrl;
+  // };
+
+  useEffect(() => {
+    const getDocsForStudent = async () => {
+      if (keepItSafeContract) {
+        const studentDocs = await keepItSafeContract.getStudentDocs();
+        setGotDocs(studentDocs);
+        studentDocs.map((doc: any, id: any) => {
+          projects.map((proj: any, idx: any) => {
+            if (proj.value === doc[0]) {
+              proj.exists = true;
+              proj.img = `${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${doc.ipfsHash}?${process.env.NEXT_PUBLIC_TOKEN}`;
+              // proj.image = GetIpfsUrlFromPinata(doc.ipfsHash)
+              console.log(proj.img);
+            }
+            if (doc[0] === "idcard") {
+              setIdCardPresent(true);
+            }
+          })
+        }
+        )
+      }
+    }
+    const getStudentDetails = async () => {
+      if (keepItSafeContract) {
+        console.log(wallets[0]);
+        const studentDetails = await keepItSafeContract.getStudentDetails(wallets[0].address);
+        setStudentDetails(studentDetails);
+      }
+    }
+    getDocsForStudent();
+    getStudentDetails();
+  }, [])
   return (
     // <div className="h-[100vh] flex justify-center items-center flex-col">
     //   <div className="mb-[1%]">
@@ -20,7 +69,7 @@ export default function StudentProfile() {
     // </div>
     <div className="h-[100vh] flex flex-col">
       <div className="text-6xl mt-[15%] flex-start ml-[20%]">
-        {"Vaibhav's documents"}
+        {`${studentDetails ? studentDetails[0] : <CircularProgress />}'s documents`}
       </div>
       <div className=" text-4xl mt-[5%] flex-start ml-[20%]">
         <div>Expires in</div>
@@ -36,12 +85,16 @@ export default function StudentProfile() {
                 radius="lg"
                 alt={"ID Card"}
                 className="w-full object-cover h-[140px]"
-                src={"https://cdn.britannica.com/86/170586-050-AB7FEFAE/Taj-Mahal-Agra-India.jpg"}
+                src={defaultURL}
               />
             </CardBody>
             <CardFooter className="text-small justify-between">
               <b>{"ID Card"}</b>
-              <Button isIconOnly onPress={() => {router.push("/request")}}><FaPlus/></Button>
+              <Button color={idCardPresent ? 'success' : 'danger'} isIconOnly onPress={() => {
+                if (!idCardPresent) {
+                  router.push("/request")
+                }
+              }}>{idCardPresent ? <FaCheck color="white" /> : <FaPlus />}</Button>
             </CardFooter>
           </Card>
         </div>
@@ -66,7 +119,11 @@ export default function StudentProfile() {
               </CardBody>
               <CardFooter className="text-small justify-between">
                 <b>{item.title}</b>
-                <Button isIconOnly onPress={() => {router.push("/request")}}><FaPlus/></Button>
+                <Button color={item.exists ? 'success' : 'danger'} isIconOnly onPress={() => {
+                  if (!item.exists) {
+                    router.push("/request")
+                  }
+                }}>{item.exists ? <FaCheck color="white" /> : <FaPlus />}</Button>
               </CardFooter>
             </Card>
           ))}
@@ -76,32 +133,31 @@ export default function StudentProfile() {
   );
 }
 
+let defaultURL = "https://cdn.britannica.com/86/170586-050-AB7FEFAE/Taj-Mahal-Agra-India.jpg"
+
 export const projects = [
   {
     title: "LOR",
     description:
       "A technology company that builds economic infrastructure for the internet.",
-    img: "https://cdn.britannica.com/86/170586-050-AB7FEFAE/Taj-Mahal-Agra-India.jpg",
+    img: defaultURL,
+    value: 'lor',
+    exists: false
   },
   {
     title: "Degree",
     description:
       "A streaming service that offers a wide variety of award-winning TV shows, movies, anime",
-    img: "https://cdn.britannica.com/86/170586-050-AB7FEFAE/Taj-Mahal-Agra-India.jpg",
+    img: defaultURL,
+    value: 'degree',
+    exists: false
   },
   {
-    title: "Marksheet",
+    title: "Gradesheet",
     description:
       "A multinational technology company that specializes in Internet-related services and products.",
-    img: "https://cdn.britannica.com/86/170586-050-AB7FEFAE/Taj-Mahal-Agra-India.jpg",
-  },
-];
-
-export const expiration = [
-  {
-    title: "ID Card",
-    description:
-      "A technology company that builds economic infrastructure for the internet.",
-    img: "https://cdn.britannica.com/86/170586-050-AB7FEFAE/Taj-Mahal-Agra-India.jpg",
+    img: defaultURL,
+    value: 'gradesheet',
+    exists: false
   },
 ];

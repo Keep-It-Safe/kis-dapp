@@ -5,10 +5,10 @@ import { Button } from "@nextui-org/react";
 import { useState, useEffect } from "react";
 import { useKeepItSafeContract } from "@/hooks/useKeepItSafe";
 import { useWallets, usePrivy } from "@privy-io/react-auth";
+import { CircularProgress } from "@nextui-org/react";
 
 export default function GridBackgroundDemo() {
   const [selectedValue, setselectedValue] = useState<string | null>(null);
-  const [selectedProject, setSelectedProject] = useState<any>(null);
   const { keepItSafeContract } = useKeepItSafeContract();
   const { wallets } = useWallets();
   const wallet = wallets[0];
@@ -35,8 +35,6 @@ export default function GridBackgroundDemo() {
     getStudentDetails();
   }, []);
 
-  console.log(selectedValue);
-
   const handleSubmit = async () => {
     if (user?.email) {
       const email = user.email.address.toString();
@@ -59,7 +57,6 @@ export default function GridBackgroundDemo() {
           selectedValue
         );
       }
-      console.log("Selected Project:", selectedValue);
     }
   };
 

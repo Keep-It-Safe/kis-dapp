@@ -81,16 +81,18 @@ export const Card = ({
         className
       )}
     >
-      <div className="relative z-50">
-        <div className="p-4">{children}</div>
-        <Button
-          className="absolute bottom-3 right-4 py-1 px-3 rounded-md"
-          variant="flat"
-          color={selected?"success":"danger"}
-          onClick={onSelect}
-        >
-          {selected ? "Selected" : "Select"}
-        </Button>
+      <div className="z-50 flex-col h-full">
+        <div className="p-4 flex-col">{children}</div>
+        <div className="flex-col h-full">
+          <Button
+            className="rounded-md"
+            variant="flat"
+            color={selected ? "success" : "danger"}
+            onClick={onSelect}
+          >
+            {selected ? "Selected" : "Select"}
+          </Button>
+        </div>
       </div>
     </div>
   );
