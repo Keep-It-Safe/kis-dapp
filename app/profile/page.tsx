@@ -7,6 +7,7 @@ import { useWallets } from "@privy-io/react-auth";
 import axios from "axios";
 import UniversityProfile from "./student-profile";
 import StudentProfile from "./student-profile";
+import { CircularProgress } from "@nextui-org/react";
 export default function AuroraBackgroundDemo() {
     const router = useRouter();
     const { wallets } = useWallets();
@@ -30,5 +31,5 @@ export default function AuroraBackgroundDemo() {
       );
     }, []);
   
-    return isLoading?<h1>Loading...</h1>:(isUniversity? <UniversityProfile/>:<StudentProfile/>)
+    return isLoading?<div className="h-[100vh] flex justify-center items-center"><CircularProgress size="lg" color="secondary"/></div>:(isUniversity? <UniversityProfile/>:<StudentProfile/>)
 }

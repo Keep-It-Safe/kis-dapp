@@ -2,6 +2,7 @@
 
 import { useWallets } from "@privy-io/react-auth";
 import { useEffect, useState } from "react";
+import { CircularProgress } from "@nextui-org/react";
 import axios from "axios";
 import UniversityProfileForm from "./university-profile-form";
 import StudentProfileForm from "./student-profile-form";
@@ -28,6 +29,6 @@ export default function CompleteProfile() {
   }, []);
 
     return (
-        isLoading?<h1>Loading...</h1>:isUniversity?<UniversityProfileForm/>:<StudentProfileForm/>
+        isLoading?<div className="h-[100vh] flex justify-center items-center"><CircularProgress size="lg" color="secondary"/></div>:isUniversity?<UniversityProfileForm/>:<StudentProfileForm/>
     )
 }
