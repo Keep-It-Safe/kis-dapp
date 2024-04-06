@@ -1,23 +1,24 @@
 "use client";
 
-import { HoverEffect } from "@/components/ui/card-hover-effect";
-import { Button } from "@nextui-org/react";
+import { Divider } from "@nextui-org/react";
 
 export default function StudentProfile() {
   return (
-    <div className="h-[100vh] flex justify-center items-center flex-col">
-      <div className="mb-[1%]">
-        <h1 className="text-6xl">A One Stop For All Your Documents</h1>
-        <div className="max-w-5xl mx-auto px-8 mt-5">
-          <HoverEffect
-            items={projects}
-          />
+    // <div className="h-[100vh] flex justify-center items-center flex-col">
+    //   <div className="mb-[1%]">
+    //     <h1 className="text-6xl">Profile</h1>
+    //     <div className="h-20 flex justify-around">
+    //         <div>Expiring docs</div>
+    //         <Divider orientation="vertical" className="bg-slate-400"/>
+    //         <div>Permanent docs</div>
+    //     </div>
+    //   </div>
+    // </div>
+    <div className="h-[100vh] flex flex-col">
+        <div className="text-6xl mt-[15%] flex-start ml-[20%]">
+            Profile
         </div>
-        <div className="flex flex-col-reverse">
-          <Button color="secondary">Submit</Button>
-        </div>
-      </div>
-    </div>
+    </div> 
   );
 
 };
