@@ -1,18 +1,25 @@
-// RaiseRequest.js
-// import { HoverEffect } from "./ui/card-hover-effect";
-// import { Button } from "@nextui-org/react";
-// import { useState, useEffect } from "react";
-// import { useKeepItSafeContract } from "@/hooks/useKeepItSafe";
-// import { useWallets, usePrivy } from "@privy-io/react-auth";
+// pages/how-it-works.js
+"use client";
+import React from "react";
+import { Image } from "@nextui-org/react";
 
-export default function WorksPage() {
-  
+const HowItWorksPage = () => {
   return (
-    <div className="h-[100vh] flex justify-center items-center flex-col">
-      <div className="mb-[1%]">
-        <h1 className="text-6xl">How it Works?</h1>        
-        
+    <div>
+      <div className="h-[30vh] flex flex-col">
+        <div className="text-6xl mt-[8%] flex-start ml-[3%]">
+          {"How it Works??"}
+        </div>
       </div>
+        <Image
+          className="ml-[45%]"
+          width={1000}
+          height={800}
+          alt="NextUI hero Image with delay"
+          src="workflow.png"
+        />
     </div>
   );
-}
+};
+
+export default HowItWorksPage;
