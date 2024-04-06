@@ -39,15 +39,27 @@ export default function PendingRequest() {
     onClose: onClose2,
   } = useDisclosure();
 
-  const submitRequest = () => {
-    keepItSafeContract?.approveDocumentRequest(selectedproject?.studentAddress, selectedproject?.docType, cid, expiresIn);
+  const submitRequest = async () => {
+    const time = await keepItSafeContract.time();
+    let newExpiresIn = 0;
+    if (expiresIn !== 0) {
+      newExpiresIn = parseInt(time) + parseInt(expiresIn);
+    }
+    console.log(newExpiresIn);
+
+    await keepItSafeContract?.approveDocumentRequest(
+      selectedproject?.studentAddress,
+      selectedproject?.docType,
+      cid,
+      newExpiresIn
+    );
     onClose();
-  }
+  };
 
 
-  useEffect(()=>{
-    const getStudentsRequests = async() => {
-      if(keepItSafeContract){
+  useEffect(() => {
+    const getStudentsRequests = async () => {
+      if (keepItSafeContract) {
         const requestsData = await keepItSafeContract.getAllRequestsForInstitutes();
         const updatedRequests = await Promise.all(requestsData.map(async (request: any) => {
           const studentDetails = await getStudentDetails(request[0]);
@@ -209,105 +221,105 @@ export default function PendingRequest() {
         Pending Requests
       </p>
       <div className="h-[100vh] w-[50%] flex items-center flex-col">
-       {studentRequests?.map((project: any, index: any) => (
-        <Card
-          className="w-full mt-2 p-3"
-          shadow="sm"
-          key={index}
-          isPressable
-          onPress={() => console.log("item pressed")}
+        {studentRequests?.map((project: any, index: any) => (
+          <Card
+            className="w-full mt-2 p-3"
+            shadow="sm"
+            key={index}
+            isPressable
+            onPress={() => console.log("item pressed")}
+          >
+            <CardHeader className="justify-between">
+              <div>{project.docType}</div>
+              <div>{project?.studentDetails[0]}</div>
+            </CardHeader>
+            <CardBody className="flex flex-row-reverse gap-2">
+              <Button
+                color="success"
+                variant="flat"
+                onClick={() => changeHandler(project)}
+                onPress={project.docType !== "idcard" ? onOpen : onOpen2}
+              >
+                Approve
+              </Button>
+              <Button color="danger" variant="flat">
+                Reject
+              </Button>
+            </CardBody>
+          </Card>
+        ))}
+        <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
+          <ModalContent>
+            {(onClose) => (
+              <>
+                <ModalHeader className="flex flex-col gap-1">
+                  Upload document
+                </ModalHeader>
+                <ModalBody>
+                  <Input
+                    type="file"
+                    autoFocus
+                    label="Image"
+                    placeholder="Upload document"
+                    variant="bordered"
+                    ref={inputFile}
+                    onChange={handleChange}
+                  />
+                </ModalBody>
+                <ModalFooter>
+                  <Button
+                    color="primary"
+                    disabled={uploading}
+                    onClick={submitRequest}
+                  >
+                    {uploading ? "Uploading..." : "Upload Your Document to IPFS"}
+                  </Button>
+                </ModalFooter>
+              </>
+            )}
+          </ModalContent>
+        </Modal>
+        <Modal
+          isOpen={isOpen2}
+          onOpenChange={onOpenChange2}
+          placement="top-center"
         >
-          <CardHeader className="justify-between">
-            <div>{project.docType}</div>
-            <div>{project?.studentDetails[0]}</div>
-          </CardHeader>
-          <CardBody className="flex flex-row-reverse gap-2">
-            <Button
-              color="success"
-              variant="flat"
-              onClick={() => changeHandler(project)}
-              onPress={project.docType !== "idcard" ? onOpen : onOpen2}
-            >
-              Approve
-            </Button>
-            <Button color="danger" variant="flat">
-              Reject
-            </Button>
-          </CardBody>
-        </Card>
-      ))}
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">
-                Upload document
-              </ModalHeader>
-              <ModalBody>
-                <Input
-                  type="file"
-                  autoFocus
-                  label="Image"
-                  placeholder="Upload document"
-                  variant="bordered"
-                  ref={inputFile}
-                  onChange={handleChange}
-                />
-              </ModalBody>
-              <ModalFooter>
-                <Button
-                  color="primary"
-                  disabled={uploading}
-                  onClick={submitRequest}
-                >
-                  {uploading ? "Uploading..." : "Upload Your Document to IPFS"}
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
-      <Modal
-        isOpen={isOpen2}
-        onOpenChange={onOpenChange2}
-        placement="top-center"
-      >
-        <ModalContent>
-          {(onClose2) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">
-                Upload document
-              </ModalHeader>
-              <ModalBody>
-                <Input
-                  type="file"
-                  autoFocus
-                  placeholder="Upload document"
-                  variant="bordered"
-                  ref={inputFile}
-                  onChange={handleChange}
-                />
-                <Input
-                  type="text"
-                  placeholder="Expires In"
-                  ref={inputExpiresIn}
-                  onChange={handleChange2}
-                />
-              </ModalBody>
-              <ModalFooter>
-                <Button
-                  color="primary"
-                  disabled={uploading}
-                  onClick={submitRequest}
-                >
-                  {uploading ? "Uploading..." : "Upload Your Document to IPFS"}
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
-    </div>
+          <ModalContent>
+            {(onClose2) => (
+              <>
+                <ModalHeader className="flex flex-col gap-1">
+                  Upload document
+                </ModalHeader>
+                <ModalBody>
+                  <Input
+                    type="file"
+                    autoFocus
+                    placeholder="Upload document"
+                    variant="bordered"
+                    ref={inputFile}
+                    onChange={handleChange}
+                  />
+                  <Input
+                    type="text"
+                    placeholder="Expires In"
+                    ref={inputExpiresIn}
+                    onChange={handleChange2}
+                  />
+                </ModalBody>
+                <ModalFooter>
+                  <Button
+                    color="primary"
+                    disabled={uploading}
+                    onClick={submitRequest}
+                  >
+                    {uploading ? "Uploading..." : "Upload Your Document to IPFS"}
+                  </Button>
+                </ModalFooter>
+              </>
+            )}
+          </ModalContent>
+        </Modal>
+      </div>
     </div>
   );
 }
