@@ -83,7 +83,7 @@ export const Card = ({
       <div className="relative z-50">
         <div className="p-4">{children}</div>
         <Button
-          className="absolute bottom-3 right-4 py-1 px-3 rounded-md"
+          className="bottom-3 right-4 py-1 px-3 rounded-md"
           variant="flat"
           color={selected?"success":"danger"}
           onClick={onSelect}

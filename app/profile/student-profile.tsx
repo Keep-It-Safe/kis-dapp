@@ -2,6 +2,7 @@
 
 import { Button, Card, CardBody, Image, CardFooter } from "@nextui-org/react";
 import { FaPlus } from "react-icons/fa";
+import { FaCheck } from "react-icons/fa";
 import { useRouter } from "next/navigation"; 
 
 export default function StudentProfile() {
