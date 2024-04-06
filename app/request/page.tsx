@@ -13,7 +13,8 @@ export default function RequestPage() {
   const wallet = wallets[0];
   const [isUniversity, setIsUniversity] = useState<Boolean>(false);
   const [isLoading, setIsLoading] = useState<Boolean>(false);
-  const [isProfileComplete, setIsProfileComplete] = useState<Boolean>(false);
+  const { ready, authenticated, login, user, linkEmail } = usePrivy();
+
   useEffect(() => {
     setIsLoading(true);
     axios.get(`/api/findUser?address=${wallet?.address}`).then(
