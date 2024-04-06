@@ -39,8 +39,6 @@ export default function PendingRequest() {
             exists: request[2]
           };
         }));
-        console.log(updatedRequests);
-        console.log(updatedRequests[1].studentDetails[0]);
         setStudentRequests(updatedRequests);
       }
     }
@@ -48,13 +46,9 @@ export default function PendingRequest() {
   },[])
 
   async function getStudentDetails(studentAddress: any) {
-    // Call your contract function to get student details here
-    // Assuming you have a function `getStudentDetails` to fetch student details
     const studentDetails = await keepItSafeContract?.getStudentDetails(studentAddress);
     return studentDetails;
   }
-
-  
 
   const uploadFile = async (fileToUpload: any) => {
     try {
