@@ -17,8 +17,7 @@ export default function AuroraBackgroundDemo() {
       axios.get(`/api/findUser?address=${wallet?.address}`).then(
         (response) => {
           setIsUniversity(response.data.isUniversity);
-          setIsProfileComplete(response.data.isProfileComplete);
-          if(!isProfileComplete) {
+          if(!response.data.isProfileComplete) {
               router.push('/profile/complete');
           }
           console.log(response.data);
