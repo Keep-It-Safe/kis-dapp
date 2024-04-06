@@ -12,6 +12,7 @@ export const HoverEffect = ({
 }: {
   items: {
     value: string;
+    title: string;
     description: string;
     link: string;
   }[];
@@ -53,7 +54,7 @@ export const HoverEffect = ({
             onSelect={() => handleSelect(item.value)}
             selected={selectedItem === item.value}
           >
-            <Cardvalue>{item.value}</Cardvalue>
+            <Cardvalue>{item.title}</Cardvalue>
             <CardDescription>{item.description}</CardDescription>
           </Card>
         </div>
@@ -83,7 +84,7 @@ export const Card = ({
       <div className="relative z-50">
         <div className="p-4">{children}</div>
         <Button
-          className="bottom-3 right-4 py-1 px-3 rounded-md"
+          className="absolute bottom-3 right-4 py-1 px-3 rounded-md"
           variant="flat"
           color={selected?"success":"danger"}
           onClick={onSelect}

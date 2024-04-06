@@ -1,11 +1,12 @@
-// RaiseRequest.js
-import { HoverEffect } from "./ui/card-hover-effect";
+"use client";
+
+import { HoverEffect } from "@/components/ui/card-hover-effect";
 import { Button } from "@nextui-org/react";
 import { useState, useEffect } from "react";
 import { useKeepItSafeContract } from "@/hooks/useKeepItSafe";
 import { useWallets, usePrivy } from "@privy-io/react-auth";
 
-export default function RaiseRequest() {
+export default function GridBackgroundDemo() {
   const [selectedValue, setselectedValue] = useState<string | null>(null);
   const [selectedProject, setSelectedProject] = useState<any>(null);
   const { keepItSafeContract } = useKeepItSafeContract();
@@ -16,10 +17,8 @@ export default function RaiseRequest() {
 
   const handleSelect = (title: string) => {
     if (selectedValue === title) {
-      // If the clicked card is already selected, deselect it
       setselectedValue(null);
     } else {
-      // If a new card is clicked, deselect the previously selected card (if any) and select the new one
       setselectedValue(title);
     }
   };
@@ -95,24 +94,28 @@ export default function RaiseRequest() {
       value: "lor",
     },
   ];
-  console.log(studentDetails)
+  console.log(studentDetails);
+
   return (
-    <div className="h-[100vh] flex justify-center items-center flex-col">
-      <div className="mb-[1%]">
-        <h1 className="text-6xl">Hello, Dhrupad</h1>
-        <h1 className="mt-10 text-3xl">Raise a document request here</h1>
-        <div className="max-w-5xl mx-auto px-8 mt-5">
-          <HoverEffect
-            items={projects}
-            handleSelect={handleSelect}
-            selectedItem={selectedValue}
-          />
-        </div>
-        <div className="flex flex-col-reverse">
-          <Button color="secondary" onClick={handleSubmit}>
-            Submit
-          </Button>
-        </div>
+    <div className="h-[50rem] mt-16 w-full dark:bg-black bg-white  dark:bg-grid-white/[0.2] bg-grid-black/[0.2] relative flex flex-col items-center justify-center">
+      <div className="absolute pointer-events-none inset-0 flex items-center justify-center dark:bg-black bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
+      <p className="text-4xl sm:text-7xl font-bold relative z-20 bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-neutral-500 py-5">
+        Hello, Dhrupad
+      </p>
+      {/* <p className="text-2xl sm:text-4xl font-bold relative z-20 bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-neutral-500 py-8">
+      Raise a document request here
+      </p> */}
+      <div className="max-w-5xl mx-auto px-8 mt-1">
+        <HoverEffect
+          items={projects}
+          handleSelect={handleSelect}
+          selectedItem={selectedValue}
+        />
+      </div>
+      <div className="flex flex-col-reverse">
+        <Button color="secondary" onClick={handleSubmit}>
+          Submit
+        </Button>
       </div>
     </div>
   );
