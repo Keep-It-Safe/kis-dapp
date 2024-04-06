@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import axios from "axios";
 import PendingRequest from "../../components/pending-request";
 import RaiseRequest from "../../components/raise-request";
+import {CircularProgress} from "@nextui-org/react";
 
 export default function RequestPage() {
   const router = useRouter();
@@ -32,5 +33,5 @@ export default function RequestPage() {
     );
   }, []);
 
-  return isLoading?<h1>Loading...</h1>:(isUniversity? <PendingRequest/>:<RaiseRequest/>)
+  return isLoading?<div className="h-[100vh] flex justify-center items-center"><CircularProgress size="lg" color="secondary"/></div>:(isUniversity? <PendingRequest/>:<RaiseRequest/>)
 }

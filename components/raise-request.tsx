@@ -95,7 +95,7 @@ export default function RaiseRequest() {
       value: "lor",
     },
   ];
-
+  console.log(studentDetails)
   return (
     <div className="h-[100vh] flex justify-center items-center flex-col">
       <div className="mb-[1%]">
