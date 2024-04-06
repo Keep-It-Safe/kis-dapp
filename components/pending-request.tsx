@@ -39,41 +39,19 @@ export default function PendingRequest() {
     onClose: onClose2,
   } = useDisclosure();
 
-  const submitRequest = async() => {
-    const time = await keepItSafeContract.time();
-    console.log(parseInt(time));
-    let newExpiresIn = 0;
-    if (expiresIn !== 0) {
-      newExpiresIn = parseInt(time) + parseInt(expiresIn);
-    }
-    console.log(newExpiresIn);
-    
-    // await keepItSafeContract?.approveDocumentRequest(
-    //   selectedproject?.studentAddress,
-    //   selectedproject?.docType,
-    //   cid,
-    //   newExpiresIn
-    // );
-    onClose();
-  };
-  
-
-  useEffect(() => {
-    const getStudentsRequests = async () => {
-      if (keepItSafeContract) {
-        const requestsData =
-          await keepItSafeContract.getAllRequestsForInstitutes();
-        const updatedRequests = await Promise.all(
-          requestsData.map(async (request: any) => {
-            const studentDetails = await getStudentDetails(request[0]);
-            return {
-              studentDetails,
-              studentAddress: request[0],
-              docType: request[1],
-              exists: request[2],
-            };
-          })
-        );
+  useEffect(()=>{
+    const getStudentsRequests = async() => {
+      if(keepItSafeContract){
+        const requestsData = await keepItSafeContract.getAllRequestsForInstitutes();
+        const updatedRequests = await Promise.all(requestsData.map(async (request: any) => {
+          const studentDetails = await getStudentDetails(request[0]);
+          return {
+            studentDetails,
+            studentAddress: request[0],
+            docType: request[1],
+            exists: request[2]
+          };
+        }));
         setStudentRequests(updatedRequests);
       }
     };
@@ -81,11 +59,7 @@ export default function PendingRequest() {
   }, []);
 
   async function getStudentDetails(studentAddress: any) {
-    // Call your contract function to get student details here
-    // Assuming you have a function `getStudentDetails` to fetch student details
-    const studentDetails = await keepItSafeContract?.getStudentDetails(
-      studentAddress
-    );
+    const studentDetails = await keepItSafeContract?.getStudentDetails(studentAddress);
     return studentDetails;
   }
 

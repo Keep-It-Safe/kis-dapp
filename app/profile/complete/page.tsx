@@ -14,7 +14,7 @@ export default function CompleteProfile() {
   const [isLoading, setIsLoading] = useState<Boolean>(false);
 
   useEffect(() => {
-  const wallet = wallets[0];
+    const wallet = wallets[0];
     setIsLoading(true);
     axios.get(`/api/findUser?address=${wallet?.address}`).then(
       (response) => {
@@ -28,7 +28,7 @@ export default function CompleteProfile() {
     );
   }, []);
 
-    return (
-        isLoading?<div className="h-[100vh] flex justify-center items-center"><CircularProgress size="lg" color="secondary"/></div>:isUniversity?<UniversityProfileForm/>:<StudentProfileForm/>
-    )
+  return (
+    isLoading ? <div className="h-[100vh] flex justify-center items-center"><CircularProgress size="lg" color="secondary" /></div> : isUniversity ? <UniversityProfileForm /> : <StudentProfileForm />
+  )
 }

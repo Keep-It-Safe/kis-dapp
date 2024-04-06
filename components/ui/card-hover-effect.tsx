@@ -12,6 +12,7 @@ export const HoverEffect = ({
 }: {
   items: {
     value: string;
+    title: string;
     description: string;
     link: string;
   }[];
@@ -53,7 +54,7 @@ export const HoverEffect = ({
             onSelect={() => handleSelect(item.value)}
             selected={selectedItem === item.value}
           >
-            <Cardvalue>{item.value}</Cardvalue>
+            <Cardvalue>{item.title}</Cardvalue>
             <CardDescription>{item.description}</CardDescription>
           </Card>
         </div>
@@ -63,39 +64,39 @@ export const HoverEffect = ({
 };
 
 export const Card = ({
-  className,
-  children,
-  onSelect,
-  selected,
-}: {
-  className?: string;
-  children: React.ReactNode;
-  onSelect: () => void;
-  selected: boolean;
-}) => {
-  return (
-    <div
-      className={cn(
-        "rounded-2xl h-full w-full p-4 overflow-hidden bg-black border border-transparent dark:border-white/[0.2] group-hover:border-slate-700 relative z-20",
-        className
-      )}
-    >
-      <div className="z-50 flex-col h-full">
-        <div className="p-4 flex-col">{children}</div>
-        <div className="flex-col h-full">
-          <Button
-            className="rounded-md"
-            variant="flat"
-            color={selected ? "success" : "danger"}
-            onClick={onSelect}
-          >
-            {selected ? "Selected" : "Select"}
-          </Button>
+    className,
+    children,
+    onSelect,
+    selected,
+  }: {
+    className?: string;
+    children: React.ReactNode;
+    onSelect: () => void;
+    selected: boolean;
+  }) => {
+    return (
+      <div
+        className={cn(
+          "rounded-2xl h-full w-full p-4 overflow-hidden bg-black border border-transparent dark:border-white/[0.2] group-hover:border-slate-700 relative flex flex-col justify-between", // added flex styles
+          className
+        )}
+        style={{ width: '350px', height: '250px' }}
+      >
+        <div>
+          <div className="p-4">{children}</div>
         </div>
+        <Button
+          className="py-1 px-3 rounded-md"
+          variant="flat"
+          color={selected ? "success" : "danger"}
+          onClick={onSelect}
+        >
+          {selected ? "Selected" : "Select"}
+        </Button>
       </div>
-    </div>
-  );
-};
+    );
+  };
+  
 
 export const Cardvalue = ({
   className,
