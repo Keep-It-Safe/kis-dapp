@@ -4,13 +4,18 @@ import { HoverEffect } from "@/components/ui/card-hover-effect";
 import { useState, useEffect } from "react";
 import { useKeepItSafeContract } from "@/hooks/useKeepItSafe";
 import { useWallets, usePrivy } from "@privy-io/react-auth";
-import { Card, CardBody, Button, CardHeader} from "@nextui-org/react";
+import { Card, CardBody, Button, CardHeader, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Input, useDisclosure } from "@nextui-org/react";
 
 export default function PendingRequest() {
   const { keepItSafeContract } = useKeepItSafeContract();
   const { wallets } = useWallets();
   const wallet = wallets[0];
   const [studentRequests, setStudentRequests] = useState<any>(null);
+
+  const {isOpen, onOpen, onOpenChange, onClose} = useDisclosure();
+  const submitRequest = () => {
+    onClose();
+  }
 
   useEffect(()=>{
     const getStudentsRequests = async() => {
@@ -48,30 +53,38 @@ export default function PendingRequest() {
             <div>{project?.studentDetails[0]}</div>
           </CardHeader>
           <CardBody className="flex flex-row-reverse gap-2">
-            <Button color="success" variant="flat">
-                Approve
+            <Button color="success" variant="flat" onPress={onOpen}>
+              Approve
             </Button>
             <Button color="danger" variant="flat">
-                Reject
+              Reject
             </Button>
           </CardBody>
         </Card>
       ))}
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">Upload document</ModalHeader>
+              <ModalBody>
+                <Input
+                  type="file"
+                  autoFocus
+                  label="Image"
+                  placeholder="Upload document"
+                  variant="bordered"
+                />
+              </ModalBody>
+              <ModalFooter>
+                <Button color="primary" onPress={submitRequest}>
+                  Submit and Approve
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
     </div>
   );
 }
-
-export const projects = [
-  {
-    title: "ID Card",
-    name: "Vaibhav"
-  },
-  {
-    title: "Gradesheet",
-    name: "Abhishek"
-  },
-  {
-    title: "Letter of Recommendation",
-    name: "Dhrupad Sah"
-  },
-];
