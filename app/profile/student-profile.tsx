@@ -27,6 +27,7 @@ export default function StudentProfile() {
           <Card
             shadow="sm"
             isPressable
+            className="mt-5"
           >
             <CardBody className="overflow-visible p-0">
               <Image
@@ -44,7 +45,7 @@ export default function StudentProfile() {
           </Card>
         </div>
       </div>
-      <div className=" text-4xl mt-[5%] flex-start ml-[20%]">
+      <div className=" text-4xl mt-[3%] flex-start ml-[20%]">
         <div>Permanent documents</div>
         <div className="flex flex-row gap-5 mt-5">
           {projects.map((item, index) => (
