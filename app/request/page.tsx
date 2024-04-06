@@ -19,8 +19,7 @@ export default function RequestPage() {
     axios.get(`/api/findUser?address=${wallet?.address}`).then(
       (response) => {
         setIsUniversity(response.data.isUniversity);
-        setIsProfileComplete(response.data.isProfileComplete);
-        if(!isProfileComplete) {
+        if(!response.data.isProfileComplete) {
             router.push('/profile/complete');
         }
         console.log(response.data);
@@ -32,5 +31,5 @@ export default function RequestPage() {
     );
   }, []);
 
-  return isLoading?<h1>Loading...</h1>:(isUniversity? <h1>University</h1>:<h1>Student</h1>)
+  return isLoading?<h1>Loading...</h1>:(isUniversity? <PendingRequest/>:<RaiseRequest/>)
 }
