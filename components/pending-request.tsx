@@ -1,10 +1,10 @@
 "use client";
 
 import { HoverEffect } from "@/components/ui/card-hover-effect";
-import { Button } from "@nextui-org/react";
 import { useState, useEffect } from "react";
 import { useKeepItSafeContract } from "@/hooks/useKeepItSafe";
 import { useWallets, usePrivy } from "@privy-io/react-auth";
+import { Card, CardBody, Button, CardHeader} from "@nextui-org/react";
 
 export default function PendingRequest() {
   const { keepItSafeContract } = useKeepItSafeContract();
@@ -40,15 +40,22 @@ export default function PendingRequest() {
 
   return (
     <div className="h-[100vh] flex justify-center items-center flex-col">
-      <div className="mb-[1%]">
-        <h1 className="text-6xl">Pending Requests</h1>
-        <div className="max-w-5xl mx-auto px-8 mt-5">
-          <HoverEffect items={projects} />
-        </div>
-        <div className="flex flex-col-reverse">
-          <Button color="secondary">Submit</Button>
-        </div>
-      </div>
+      {projects.map((project, index) => (
+        <Card shadow="sm" key={index} isPressable onPress={() => console.log("item pressed")}>
+          <CardHeader className="justify-between">
+            <p>{project.title}</p>
+            <p>{project.name}</p>
+          </CardHeader>
+          <CardBody className="flex">
+            <Button>
+                Approve
+            </Button>
+            <Button>
+                Approve
+            </Button>
+          </CardBody>
+        </Card>
+      ))}
     </div>
   );
 }
@@ -56,26 +63,14 @@ export default function PendingRequest() {
 export const projects = [
   {
     title: "ID Card",
-    description:
-      "A technology company that builds economic infrastructure for the internet.",
-    link: "",
+    name: "Vaibhav"
   },
   {
-    title: "Degree",
-    description:
-      "A streaming service that offers a wide variety of award-winning TV shows, movies, anime",
-    link: "",
+    title: "Gradesheet",
+    name: "Abhishek"
   },
   {
-    title: "Marksheet",
-    description:
-      "A multinational technology company that specializes in Internet-related services and products.",
-    link: "",
+    title: "Letter of Recommendation",
+    name: "Dhrupad Sah"
   },
-  {
-    title: "Marksheet",
-    description:
-      "A multinational technology company that specializes in Internet-related services and products.",
-    link: "",
-  }
 ];

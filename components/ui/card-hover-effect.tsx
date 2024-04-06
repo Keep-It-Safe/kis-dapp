@@ -2,47 +2,46 @@ import { cn } from "@/utils/cn";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { useState } from "react";
+import { Button } from "@nextui-org/react";
 
 export const HoverEffect = ({
   items,
   className,
-  onSelect,
+  handleSelect,
+  selectedItem,
 }: {
   items: {
-    title: string;
+    value: string;
     description: string;
     link: string;
   }[];
   className?: string;
-  onSelect: (project: any) => void;
+  handleSelect: (value: string) => void;
+  selectedItem: string | null;
 }) => {
   let [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
     <div
       className={cn(
-        "grid grid-cols-1 md:grid-cols-2  lg:grid-cols-4  py-10",
+        "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 py-10",
         className
       )}
     >
       {items.map((item, idx) => (
         <div
-          key={item.title}
-          className="relative group  block p-2 h-full w-full"
+          key={item.value}
+          className="relative group block p-2 h-full w-full"
           onMouseEnter={() => setHoveredIndex(idx)}
           onMouseLeave={() => setHoveredIndex(null)}
-          onClick={() => onSelect(item)}
         >
           <AnimatePresence>
             {hoveredIndex === idx && (
               <motion.span
-                className="absolute inset-0 h-full w-full bg-neutral-200 dark:bg-slate-800/[0.8] block  rounded-3xl"
+                className="absolute inset-0 h-full w-full bg-neutral-200 dark:bg-slate-800/[0.8] block rounded-3xl"
                 layoutId="hoverBackground"
                 initial={{ opacity: 0 }}
-                animate={{
-                  opacity: 1,
-                  transition: { duration: 0.15 },
-                }}
+                animate={{ opacity: 1, transition: { duration: 0.15 } }}
                 exit={{
                   opacity: 0,
                   transition: { duration: 0.15, delay: 0.2 },
@@ -50,8 +49,11 @@ export const HoverEffect = ({
               />
             )}
           </AnimatePresence>
-          <Card>
-            <CardTitle>{item.title}</CardTitle>
+          <Card
+            onSelect={() => handleSelect(item.value)}
+            selected={selectedItem === item.value}
+          >
+            <Cardvalue>{item.value}</Cardvalue>
             <CardDescription>{item.description}</CardDescription>
           </Card>
         </div>
@@ -63,9 +65,13 @@ export const HoverEffect = ({
 export const Card = ({
   className,
   children,
+  onSelect,
+  selected,
 }: {
   className?: string;
   children: React.ReactNode;
+  onSelect: () => void;
+  selected: boolean;
 }) => {
   return (
     <div
@@ -76,11 +82,20 @@ export const Card = ({
     >
       <div className="relative z-50">
         <div className="p-4">{children}</div>
+        <Button
+          className="absolute bottom-3 right-4 py-1 px-3 rounded-md"
+          variant="flat"
+          color={selected?"success":"danger"}
+          onClick={onSelect}
+        >
+          {selected ? "Selected" : "Select"}
+        </Button>
       </div>
     </div>
   );
 };
-export const CardTitle = ({
+
+export const Cardvalue = ({
   className,
   children,
 }: {
@@ -93,6 +108,7 @@ export const CardTitle = ({
     </h4>
   );
 };
+
 export const CardDescription = ({
   className,
   children,
