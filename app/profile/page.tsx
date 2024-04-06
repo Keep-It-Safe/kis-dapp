@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useWallets } from "@privy-io/react-auth";
 import axios from "axios";
+import UniversityProfile from "./student-profile";
+import StudentProfile from "./student-profile";
 export default function AuroraBackgroundDemo() {
     const router = useRouter();
     const { wallets } = useWallets();
@@ -28,5 +30,5 @@ export default function AuroraBackgroundDemo() {
       );
     }, []);
   
-    return isLoading?<h1>Loading...</h1>:(isUniversity? <h1>University</h1>:<h1>Student</h1>)
+    return isLoading?<h1>Loading...</h1>:(isUniversity? <UniversityProfile/>:<StudentProfile/>)
 }
