@@ -10,6 +10,7 @@ export default function PendingRequest() {
   const { keepItSafeContract } = useKeepItSafeContract();
   const { wallets } = useWallets();
   const wallet = wallets[0];
+  const [studentRequests, setStudentRequests] = useState<any>(null);
 
   useEffect(()=>{
     const getStudentsRequests = async() => {
@@ -24,10 +25,8 @@ export default function PendingRequest() {
           };
         }));
         console.log(updatedRequests);
-        console.log(updatedRequests[0].studentDetails[0]);
-        
-        
-        // setRequests(updatedRequests);
+        console.log(updatedRequests[1].studentDetails[0]);
+        setStudentRequests(updatedRequests);
       }
     }
     getStudentsRequests();
@@ -42,11 +41,11 @@ export default function PendingRequest() {
 
   return (
     <div className="h-[100vh] flex justify-center items-center flex-col mx-10">
-      {projects.map((project, index) => (
-        <Card key={project.title + project.name} className="w-full mt-4 p-3" shadow="sm" key={index} isPressable onPress={() => console.log("item pressed")}>
+      {studentRequests?.map((project: any, index: any) => (
+        <Card className="w-full mt-4 p-3" shadow="sm" key={index} isPressable onPress={() => console.log("item pressed")}>
           <CardHeader className="justify-between">
-            <div>{project.title}</div>
-            <div>{project.name}</div>
+            <div>{project.docType}</div>
+            <div>{project?.studentDetails[0]}</div>
           </CardHeader>
           <CardBody className="flex flex-row-reverse gap-2">
             <Button color="success" variant="flat">
