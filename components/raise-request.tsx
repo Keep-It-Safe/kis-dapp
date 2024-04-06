@@ -92,7 +92,7 @@ export default function RaiseRequest() {
   ];
   return (
     <div className="h-[100vh] flex justify-center items-center flex-col">
-      <div className="mb-[1%]">
+      <div className="mt-[10%]">
         <h1 className="text-6xl">Hello, {studentDetails ? studentDetails[0] : <CircularProgress/>}</h1>
         <h1 className="mt-10 text-3xl">Raise a document request here</h1>
         <div className="max-w-5xl mx-auto px-8 mt-5">

@@ -53,7 +53,7 @@ export const HoverEffect = ({
             onSelect={() => handleSelect(item.value)}
             selected={selectedItem === item.value}
           >
-            <Cardvalue>{item.value}</Cardvalue>
+            <Cardvalue>{item.title}</Cardvalue>
             <CardDescription>{item.description}</CardDescription>
           </Card>
         </div>
