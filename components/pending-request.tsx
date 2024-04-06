@@ -3,7 +3,7 @@
 import { HoverEffect } from "@/components/ui/card-hover-effect";
 import { Button } from "@nextui-org/react";
 
-export default function RaiseRequest() {
+export default function PendingRequest() {
   return (
     <div className="h-[100vh] flex justify-center items-center flex-col">
       <div className="mb-[1%]">
