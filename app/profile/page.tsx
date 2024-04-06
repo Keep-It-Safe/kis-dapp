@@ -11,7 +11,6 @@ export default function AuroraBackgroundDemo() {
     const wallet = wallets[0];
     const [isUniversity, setIsUniversity] = useState<Boolean>(false);
     const [isLoading, setIsLoading] = useState<Boolean>(false);
-    const [isProfileComplete, setIsProfileComplete] = useState<Boolean>(false);
     useEffect(() => {
       setIsLoading(true);
       axios.get(`/api/findUser?address=${wallet?.address}`).then(
