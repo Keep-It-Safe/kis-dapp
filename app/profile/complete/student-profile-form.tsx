@@ -41,8 +41,7 @@ export default function StudentProfileForm() {
       const studentDet = await keepItSafeContract?.getStudentDetails(wallet.address);
       console.log(studentDet);
       
-      // const tx = keepItSafeContract?.addStudent(studentName, instituteAddress, _domain);
-      // await tx.wait();
+      const tx = keepItSafeContract?.addStudent(studentName, instituteAddress, _domain);
       console.log("Student Registered Success!!!");
     } else {
       console.log("User email is undefined");
