@@ -106,8 +106,8 @@ export default function StudentProfile() {
           studentDetails ? studentDetails[0] : <CircularProgress />
         }'s documents`}
       </div>
-      <div className=" text-4xl flex">
-        <div>Expires in {(idCardDoc?.expiresIn && !remove) ? parseInt(idCardDoc.expiresIn) - parseInt(time) : 0}</div>
+      <div className=" text-4xl flex flex-col">
+        <div>Expires in {(idCardDoc?.expiresIn && !remove) ? parseInt(idCardDoc.expiresIn) - parseInt(time) : 0} sec</div>
         <div>
           <Card shadow="sm" isPressable className="mt-5 items-center">
             <CardBody className="overflow-visible p-0">
@@ -116,7 +116,7 @@ export default function StudentProfile() {
                 radius="lg"
                 alt={"ID Card"}
                 className="w-full object-cover h-[140px]"
-                src={(idCardPresent && !remove) ? `${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${idCardHash}?${process.env.NEXT_PUBLIC_TOKEN}` : defaultURL}
+                src="https://i.ibb.co/pd1H6HZ/idCard.jpg"
               />
             </CardBody>
             <CardFooter className="text-small justify-between">
