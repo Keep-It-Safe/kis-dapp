@@ -15,9 +15,9 @@ export default function StudentProfileForm() {
   const { wallets } = useWallets();
   const wallet = wallets[0];
   const router = useRouter();
-  
+
   const submitDetails = async () => {
-    const id = toast.loading("Approving Request, Please wait!", {
+    const id = toast.loading("Please wait, your profile is being completed", {
       position: "top-center",
     });
     try {
