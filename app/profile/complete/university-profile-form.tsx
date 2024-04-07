@@ -68,7 +68,7 @@ export default function UniversityProfileForm() {
         size="lg"
         className="w-[50%] mt-5"
         autoFocus
-        placeholder="location"
+        placeholder="Location"
         variant="underlined"
         onChange={(e) => setUniversityLocation(e.target.value)}
       />
