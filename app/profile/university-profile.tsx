@@ -21,9 +21,9 @@ export default function UniversityProfule() {
   useEffect(() => {
     const getAllStudent = async() => {
       if(keepItSafeContract){
-        console.log(keepItSafeContract);
-        console.log(user)
-        // const students = await keepItSafeContract.getAllStudentsOfInstitute()
+        console.log(user?.email.address.trim());
+        const students = await keepItSafeContract.getAllStudentsOfInstitute(user?.email.address.trim());
+        console.log(students);
       }
     }
     getAllStudent();

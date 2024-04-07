@@ -5,7 +5,7 @@ import { Input, Button } from "@nextui-org/react";
 import { useKeepItSafeContract } from "@/hooks/useKeepItSafe";
 import { usePrivy, useWallets } from "@privy-io/react-auth";
 import axios from "axios";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
 
 export default function UniversityProfileForm() {
