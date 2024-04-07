@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Input, Button } from "@nextui-org/react";
 import { useKeepItSafeContract } from "@/hooks/useKeepItSafe";
 import { usePrivy, useWallets } from "@privy-io/react-auth";
+import { useRouter } from "next/navigation";
 import axios from "axios";
 
 export default function StudentProfileForm() {
@@ -12,6 +13,7 @@ export default function StudentProfileForm() {
   const { ready, authenticated, login, user, linkEmail } = usePrivy();
   const { wallets } = useWallets();
   const wallet = wallets[0];
+  const router = useRouter();
 
   const submitDetails = async () => {
     if (user?.email) {
@@ -50,6 +52,7 @@ export default function StudentProfileForm() {
     } else {
       console.log("User email is undefined");
     }
+    router.back();
   };
 
   return (
