@@ -1,5 +1,4 @@
-"use client";
-
+import React from "react";
 import {
   Table,
   TableHeader,
@@ -9,8 +8,36 @@ import {
   TableColumn,
   getKeyValue,
 } from "@nextui-org/react";
+import { useState, useEffect } from "react";
+import { useKeepItSafeContract } from "@/hooks/useKeepItSafe";
+import { usePrivy, useWallets } from "@privy-io/react-auth";
 
-export default function UniversityProfule() {
+export default function UniversityProfile() {
+  const [allStudents, setAllStudents] = useState<any>(null);
+  const { keepItSafeContract } = useKeepItSafeContract();
+  const { user } = usePrivy();
+
+  useEffect(() => {
+    const getAllStudents = async () => {
+      if (keepItSafeContract && user?.email) {
+        try {
+          const students = await keepItSafeContract.getAllStudentsOfInstitute();
+          const arrObj = students?.map((a: any, i: any) => ({
+            key: i + 1,
+            name: a[0],
+            address: a[1],
+            domain: "iiits",
+          }));
+          setAllStudents(arrObj);
+        } catch (error) {
+          console.error("Error fetching students:", error);
+        }
+      }
+    };
+
+    getAllStudents();
+  }, [keepItSafeContract, user]);
+
   const rows = [
     {
       key: "1",
@@ -40,6 +67,7 @@ export default function UniversityProfule() {
       lor: "No",
     },
   ];
+
   const columns = [
     {
       key: "name",
@@ -50,42 +78,31 @@ export default function UniversityProfule() {
       label: "ADDRESS",
     },
     {
-      key: "id_card",
-      label: "ID Card",
-    },
-    {
-      key: "degree",
-      label: "Degree",
-    },
-    {
-        key: "gradesheet",
-        label: "Gradesheet",
-      },
-    {
-      key: "lor",
-      label: "LOR",
+      key: "domain",
+      label: "Domain",
     },
   ];
+
   return (
-    <div className="h-[100vh] flex flex-col">
-      <div className="text-6xl mt-[12%] flex-start ml-[10%]">IIIT Profile</div>
+    <div className="h-[100vh] flex flex-col mt-[7%]">
+      <div className="text-6xl mt-[12%] flex-start ml-[10%]">IIITS Students</div>
       <Table
         aria-label="Example table with dynamic content"
         className="mt-5 px-20"
       >
-        <TableHeader columns={columns}>
-          {(column) => (
+        <TableHeader>
+          {columns.map((column) => (
             <TableColumn key={column.key}>{column.label}</TableColumn>
-          )}
+          ))}
         </TableHeader>
-        <TableBody items={rows}>
-          {(item) => (
+        <TableBody items={allStudents ?? []}>
+          {allStudents?.map((item: any) => (
             <TableRow key={item.key}>
-              {(columnKey) => (
-                <TableCell>{getKeyValue(item, columnKey)}</TableCell>
-              )}
+              {columns.map((column) => (
+                <TableCell key={column.key}>{item[column.key]}</TableCell>
+              ))}
             </TableRow>
-          )}
+          ))}
         </TableBody>
       </Table>
     </div>
