@@ -51,6 +51,7 @@ export default function StudentProfileForm() {
           instituteAddress,
           _domain
         );
+        await tx.wait();
         console.log("Student Registered Success!!!");
       } else {
         console.log("User email is undefined");
