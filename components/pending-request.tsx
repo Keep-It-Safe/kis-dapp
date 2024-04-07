@@ -50,7 +50,6 @@ export default function PendingRequest() {
       if (expiresIn !== 0) {
         newExpiresIn = parseInt(time) + parseInt(expiresIn);
       }
-      console.log(newExpiresIn);
       const tx = await keepItSafeContract?.approveDocumentRequest(
         selectedproject?.studentAddress,
         selectedproject?.docType,
@@ -341,6 +340,7 @@ export default function PendingRequest() {
           </ModalContent>
         </Modal>
       </div>
+      <ToastContainer/>
     </div>
   );
 }
