@@ -1,5 +1,7 @@
 "use client";
 
+import { useKeepItSafeContract } from "@/hooks/useKeepItSafe";
+import { useWallets, usePrivy } from "@privy-io/react-auth";
 import {
   Table,
   TableHeader,
@@ -9,8 +11,22 @@ import {
   TableColumn,
   getKeyValue,
 } from "@nextui-org/react";
+import {useState, useEffect} from "react";
 
 export default function UniversityProfule() {
+  const [allStudents, setAllStudents] = useState<any>();
+  const {keepItSafeContract} = useKeepItSafeContract();
+  const { ready, authenticated, login, user, linkEmail } = usePrivy();
+  useEffect(() => {
+    const getAllStudent = async() => {
+      if(keepItSafeContract){
+        console.log(keepItSafeContract);
+        console.log(user)
+        // const students = await keepItSafeContract.getAllStudentsOfInstitute()
+      }
+    }
+    getAllStudent();
+  }, [])
   const rows = [
     {
       key: "1",
