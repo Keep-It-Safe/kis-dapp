@@ -50,24 +50,34 @@ export default function UniversityProfileForm() {
     }
   };
   return (
-    <div className="relative flex flex-col  h-[100vh] items-center mt-56 mx-10">
+    <div className="h-[100vh] w-full dark:bg-black bg-white  dark:bg-grid-white/[0.2] bg-grid-black/[0.2] relative flex flex-col items-center justify-center">
+      <div className="absolute pointer-events-none inset-0 flex items-center justify-center dark:bg-black bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
+      <div className="text-6xl sm:text-7xl font-bold relative z-20 bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-neutral-500 ">
+        {`Type university's name & location`}
+      </div>
       <Input
+        size="lg"
+        className="w-[50%] mt-5"
+        placeholder="Name"
         autoFocus
-        label="University name"
-        placeholder="Enter university name"
-        variant="bordered"
+        variant="underlined"
         onChange={(e) => setUniversityName(e.target.value)}
       />
+        
       <Input
+        size="lg"
+        className="w-[50%] mt-5"
         autoFocus
-        label="University location"
-        placeholder="Enter university location"
-        variant="bordered"
+        placeholder="location"
+        variant="underlined"
         onChange={(e) => setUniversityLocation(e.target.value)}
       />
-      <Button onClick={submitDetails}>
-        Submit
-      </Button>
+      <button className="p-[3px] relative mt-10" onClick={submitDetails}>
+        <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg" />
+        <div className="px-8 py-2  bg-black rounded-[6px]  relative group transition duration-200 text-white hover:bg-transparent">
+          Submit
+        </div>
+      </button>
     </div>
   );
 }
