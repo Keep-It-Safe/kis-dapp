@@ -107,7 +107,7 @@ export default function StudentProfile() {
         }'s documents`}
       </div>
       <div className=" text-4xl flex">
-        <div>Expires in {(idCardDoc?.expiresIn && !remove) ? parseInt(idCardDoc.expiresIn) - parseInt(time) : 0}</div>
+        <div>Expires in {(idCardDoc?.expiresIn && !remove) ? parseInt(idCardDoc.expiresIn) - time : 0}</div>
         <div>
           <Card shadow="sm" isPressable className="mt-5 items-center">
             <CardBody className="overflow-visible p-0">
