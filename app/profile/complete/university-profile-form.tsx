@@ -5,6 +5,7 @@ import { Input, Button } from "@nextui-org/react";
 import { useKeepItSafeContract } from "@/hooks/useKeepItSafe";
 import { usePrivy, useWallets } from "@privy-io/react-auth";
 import axios from "axios";
+import { useRouter } from "next/router";
 
 export default function UniversityProfileForm() {
   const [universityName, setUniversityName] = useState<String>();
@@ -13,7 +14,7 @@ export default function UniversityProfileForm() {
   const { ready, authenticated, login, user, linkEmail } = usePrivy();
   const { wallets } = useWallets();
   const wallet = wallets[0];
-
+  const router = useRouter();
 
   const submitDetails = async() => {
     console.log(user);
@@ -44,10 +45,10 @@ export default function UniversityProfileForm() {
       console.log(keepItSafeContract);
       const tx = await keepItSafeContract?.addInstitute(universityName, universityLocation, _domain);
       await tx.wait();
-
     } else {
       console.log("User email is undefined");
     }
+    router.back();
   };
   return (
     <div className="h-[100vh] w-full dark:bg-black bg-white  dark:bg-grid-white/[0.2] bg-grid-black/[0.2] relative flex flex-col items-center justify-center">
@@ -68,7 +69,7 @@ export default function UniversityProfileForm() {
         size="lg"
         className="w-[50%] mt-5"
         autoFocus
-        placeholder="location"
+        placeholder="Location"
         variant="underlined"
         onChange={(e) => setUniversityLocation(e.target.value)}
       />
