@@ -11,23 +11,28 @@ import {
   TableColumn,
   getKeyValue,
 } from "@nextui-org/react";
-import {useState, useEffect} from "react";
-import {toast, ToastContainer} from "react-toastify"; 
+import { useState, useEffect } from "react";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function UniversityProfule() {
-  const [allStudents, setAllStudents] = useState<any>();
-  const {keepItSafeContract} = useKeepItSafeContract();
+  const [allStudents, setAllStudents] = useState<any>(null);
+  const { keepItSafeContract } = useKeepItSafeContract();
   const { ready, authenticated, login, user, linkEmail } = usePrivy();
   useEffect(() => {
-    const getAllStudent = async() => {
-      if(keepItSafeContract){
+    const getAllStudent = async () => {
+      if (keepItSafeContract) {
         console.log(user?.email.address.trim());
-        const students = await keepItSafeContract.getAllStudentsOfInstitute(user?.email.address.trim());
-        console.log(students);
+        const students = await keepItSafeContract.getAllStudentsOfInstitute();
+        const arrObj = students?.map((a: any, i: any) =>
+          ({ key: i + 1, name: a[0], address: a[1], domain: "iiits" })
+        );
+        console.log(arrObj);
+        setAllStudents(arrObj);
       }
-    }
+    };
     getAllStudent();
-  }, [])
+  }, []);
+
   const rows = [
     {
       key: "1",
@@ -67,24 +72,12 @@ export default function UniversityProfule() {
       label: "ADDRESS",
     },
     {
-      key: "id_card",
-      label: "ID Card",
-    },
-    {
-      key: "degree",
-      label: "Degree",
-    },
-    {
-        key: "gradesheet",
-        label: "Gradesheet",
-      },
-    {
-      key: "lor",
-      label: "LOR",
+      key: "domain",
+      label: "Domain",
     },
   ];
   return (
-    <div className="h-[100vh] flex flex-col">
+    <div className="h-[100vh] flex flex-col mt-[7%]">
       <div className="text-6xl mt-[12%] flex-start ml-[10%]">IIIT Profile</div>
       <Table
         aria-label="Example table with dynamic content"
@@ -95,7 +88,7 @@ export default function UniversityProfule() {
             <TableColumn key={column.key}>{column.label}</TableColumn>
           )}
         </TableHeader>
-        <TableBody items={rows}>
+        <TableBody items={allStudents}>
           {(item) => (
             <TableRow key={item.key}>
               {(columnKey) => (
