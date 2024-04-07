@@ -25,6 +25,7 @@ export default function StudentProfile() {
   const [idCardPresent, setIdCardPresent] = useState(false);
   const [studentDetails, setStudentDetails] = useState();
   const [idCardDoc, setIdCardDoc] = useState<any>();
+  const [remove, setRemove] = useState<boolean>(false);
   let idCardHash = "";
 
   // const GetIpfsUrlFromPinata = (pinataUrl: any) => {
@@ -69,11 +70,14 @@ export default function StudentProfile() {
   }, []);
 
   useEffect(() => {
-    console.log("Working?????");
     let countDownInterval: any;
     if (idCardDoc?.expiresIn) {
       console.log(parseInt(idCardDoc.expiresIn));
       countDownInterval = setInterval(() => {
+        console.log(parseInt(idCardDoc.expiresIn) - time);
+        if(parseInt(idCardDoc.expiresIn) - time<=0){
+          setRemove(true);
+        }
         setTime(prevTime => prevTime + 1);
       }, 1000);
     }
@@ -101,25 +105,24 @@ export default function StudentProfile() {
         {`${
           studentDetails ? studentDetails[0] : <CircularProgress />
         }'s documents`}
-        {/* Your documents */}
       </div>
-      <div className=" text-4xl mt-[5%] flex-start ml-[20%]">
-        <div>Expires in {idCardDoc?.expiresIn ? parseInt(idCardDoc.expiresIn) - parseInt(time) : 0}</div>
+      <div className=" text-4xl flex">
+        <div>Expires in {(idCardDoc?.expiresIn && !remove) ? parseInt(idCardDoc.expiresIn) - parseInt(time) : 0}</div>
         <div>
-          <Card shadow="sm" isPressable className="mt-5">
+          <Card shadow="sm" isPressable className="mt-5 items-center">
             <CardBody className="overflow-visible p-0">
               <Image
                 shadow="sm"
                 radius="lg"
                 alt={"ID Card"}
                 className="w-full object-cover h-[140px]"
-                src={idCardPresent ? `${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${idCardHash}?${process.env.NEXT_PUBLIC_TOKEN}` : defaultURL}
+                src={(idCardPresent && !remove) ? `${process.env.NEXT_PUBLIC_GATEWAY_URL}/ipfs/${idCardHash}?${process.env.NEXT_PUBLIC_TOKEN}` : defaultURL}
               />
             </CardBody>
             <CardFooter className="text-small justify-between">
               <b>{"ID Card"}</b>
               <Button
-                color={idCardPresent ? "success" : "danger"}
+                color={(idCardPresent && !remove)? "success" : "danger"}
                 isIconOnly
                 onPress={() => {
                   if (!idCardPresent) {
@@ -127,7 +130,7 @@ export default function StudentProfile() {
                   }
                 }}
               >
-                {idCardPresent ? <FaCheck color="white" /> : <FaPlus />}
+                {(idCardPresent && !remove) ? <FaCheck color="white" /> : <FaPlus />}
               </Button>
             </CardFooter>
           </Card>

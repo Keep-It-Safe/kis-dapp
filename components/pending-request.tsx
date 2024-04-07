@@ -4,6 +4,7 @@ import { HoverEffect } from "@/components/ui/card-hover-effect";
 import { useState, useEffect, useRef } from "react";
 import { useKeepItSafeContract } from "@/hooks/useKeepItSafe";
 import { useWallets, usePrivy } from "@privy-io/react-auth";
+import { useRouter } from "next/navigation";
 import { toast, ToastContainer } from 'react-toastify';
 import {
   Card,
@@ -25,6 +26,7 @@ export default function PendingRequest() {
   const wallet = wallets[0];
   const [studentRequests, setStudentRequests] = useState<any>(null);
   const [expiresIn, setExpiresIn] = useState(0);
+  const router = useRouter();
   const [file, setFile] = useState("");
   const [cid, setCid] = useState("");
   const [uploading, setUploading] = useState(false);
