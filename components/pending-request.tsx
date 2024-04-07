@@ -47,18 +47,20 @@ export default function PendingRequest() {
       position: 'top-center'
     });
     try {
-      const time = await keepItSafeContract.time();
-      let newExpiresIn = 0;
-      if (expiresIn !== 0) {
-        newExpiresIn = parseInt(time) + parseInt(expiresIn);
+      if(keepItSafeContract){
+        const time = await keepItSafeContract.time();
+        let newExpiresIn = 0;
+        if (expiresIn !== 0) {
+          newExpiresIn = parseInt(time) + parseInt(expiresIn);
+        }
+        const tx = await keepItSafeContract?.approveDocumentRequest(
+          selectedproject?.studentAddress,
+          selectedproject?.docType,
+          cid,
+          newExpiresIn
+        );
+        await tx.wait();
       }
-      const tx = await keepItSafeContract?.approveDocumentRequest(
-        selectedproject?.studentAddress,
-        selectedproject?.docType,
-        cid,
-        newExpiresIn
-      );
-      await tx.wait();
       toast.update(id, {
         render: "Approved Request Successfully",
         type: "success",
@@ -135,6 +137,37 @@ export default function PendingRequest() {
   const handleChange2 = (e: any) => {
     setExpiresIn(e.target.value);
   };
+
+  const rejectRequest = async(project: any) =>{
+    const id = toast.loading("Rejecting Request, Please wait!", {
+      position: 'top-center'
+    });
+    console.log(project);
+    console.log(project.studentAddress);
+    console.log(project.docType);
+    try{
+      if(keepItSafeContract){
+        const tx = await keepItSafeContract.rejectDocumentRequest(project.studentAddress, project.docType);
+        await tx.wait();
+        toast.update(id, {
+          render: "Request Rejected Successfully",
+          type: "success",
+          position: 'top-center',
+          isLoading: false,
+          autoClose: 4000,
+        });
+        onClose();
+      }
+    }
+    catch(err){
+      console.error(err);
+      toast.error("Transaction Rejected", {
+        position: 'top-center',
+        autoClose: 4000,
+      });
+      toast.dismiss(id);
+    }
+  }
 
   return (
     // <div className="h-[100vh] flex justify-center items-center flex-col mx-10">
@@ -264,7 +297,7 @@ export default function PendingRequest() {
               >
                 Approve
               </Button>
-              <Button color="danger" variant="flat">
+              <Button onClick={() => rejectRequest(project)} color="danger" variant="flat">
                 Reject
               </Button>
             </CardBody>
