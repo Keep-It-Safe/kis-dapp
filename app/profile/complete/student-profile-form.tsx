@@ -6,6 +6,7 @@ import { useKeepItSafeContract } from "@/hooks/useKeepItSafe";
 import { usePrivy, useWallets } from "@privy-io/react-auth";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function StudentProfileForm() {
   const [studentName, setStudentName] = useState<String>();
@@ -14,45 +15,62 @@ export default function StudentProfileForm() {
   const { wallets } = useWallets();
   const wallet = wallets[0];
   const router = useRouter();
-
+  
   const submitDetails = async () => {
-    if (user?.email) {
-      const email = user.email.address.toString();
-      const indexAt = email.indexOf("@");
-      let indexDot = email.length;
-      for (let i = indexAt; i < email.length; i++) {
-        if (email[i] === ".") {
-          indexDot = i;
-          break;
+    const id = toast.loading("Approving Request, Please wait!", {
+      position: "top-center",
+    });
+    try {
+      if (user?.email) {
+        const email = user.email.address.toString();
+        const indexAt = email.indexOf("@");
+        let indexDot = email.length;
+        for (let i = indexAt; i < email.length; i++) {
+          if (email[i] === ".") {
+            indexDot = i;
+            break;
+          }
         }
-      }
-      const _domain = email.slice(indexAt + 1, indexDot);
-      console.log(_domain);
-      await axios.patch(`/api/updateProfile?address=${wallet.address}`).then(
-        (response) => {
-          console.log(response);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-      const instituteAddress = await keepItSafeContract?.getInstituteAddress(
-        _domain
-      );
-      console.log(instituteAddress);
-      // const studentDet = await keepItSafeContract?.getStudentDetails(wallet.address);
-      // console.log(studentDet);
+        const _domain = email.slice(indexAt + 1, indexDot);
+        console.log(_domain);
+        await axios.patch(`/api/updateProfile?address=${wallet.address}`).then(
+          (response) => {
+            console.log(response);
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+        const instituteAddress = await keepItSafeContract?.getInstituteAddress(
+          _domain
+        );
+        console.log(instituteAddress);
 
-      const tx = keepItSafeContract?.addStudent(
-        studentName,
-        instituteAddress,
-        _domain
-      );
-      console.log("Student Registered Success!!!");
-    } else {
-      console.log("User email is undefined");
+        const tx = keepItSafeContract?.addStudent(
+          studentName,
+          instituteAddress,
+          _domain
+        );
+        console.log("Student Registered Success!!!");
+      } else {
+        console.log("User email is undefined");
+      }
+      toast.update(id, {
+        render: "Profile submitted Successfully",
+        type: "success",
+        position: "top-center",
+        isLoading: false,
+        autoClose: 4000,
+      });
+      router.back();
+    } catch (err) {
+      console.error(err);
+      toast.error("Transaction Rejected", {
+        position: "top-center",
+        autoClose: 4000,
+      });
+      toast.dismiss(id);
     }
-    router.back();
   };
 
   return (

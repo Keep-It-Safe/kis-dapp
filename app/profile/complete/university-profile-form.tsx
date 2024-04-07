@@ -6,6 +6,7 @@ import { useKeepItSafeContract } from "@/hooks/useKeepItSafe";
 import { usePrivy, useWallets } from "@privy-io/react-auth";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function UniversityProfileForm() {
   const [universityName, setUniversityName] = useState<String>();
@@ -16,39 +17,60 @@ export default function UniversityProfileForm() {
   const wallet = wallets[0];
   const router = useRouter();
 
-  const submitDetails = async() => {
+  const submitDetails = async () => {
+    const id = toast.loading("Please wait, your profile is being completed", {
+      position: "top-center",
+    });
     console.log(user);
-    if (user?.email) {
-      const email = user.email.address.toString();
-      console.log(email)
-      const indexAt = email.indexOf("@");
-      let indexDot = email.length;
-      for (let i = indexAt; i < email.length; i++) {
-        if (email[i] === ".") {
-          indexDot = i;
-          break;
+    try {
+      if (user?.email) {
+        const email = user.email.address.toString();
+        console.log(email);
+        const indexAt = email.indexOf("@");
+        let indexDot = email.length;
+        for (let i = indexAt; i < email.length; i++) {
+          if (email[i] === ".") {
+            indexDot = i;
+            break;
+          }
         }
+        console.log(email);
+        const _domain = email.slice(indexAt + 1, indexDot);
+        console.log(_domain);
+        await axios.patch(`/api/updateProfile?address=${wallet.address}`).then(
+          (response) => {
+            console.log(response);
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+        console.log(keepItSafeContract);
+        const tx = await keepItSafeContract?.addInstitute(
+          universityName,
+          universityLocation,
+          _domain
+        );
+        await tx.wait();
+      } else {
+        console.log("User email is undefined");
       }
-      console.log(email);
-      const _domain = email.slice(indexAt + 1, indexDot);
-      console.log(_domain);
-      await axios
-      .patch(`/api/updateProfile?address=${wallet.address}`)
-      .then(
-        (response) => {
-          console.log(response);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-      console.log(keepItSafeContract);
-      const tx = await keepItSafeContract?.addInstitute(universityName, universityLocation, _domain);
-      await tx.wait();
-    } else {
-      console.log("User email is undefined");
+      toast.update(id, {
+        render: "Profile submitted Successfully",
+        type: "success",
+        position: 'top-center',
+        isLoading: false,
+        autoClose: 4000,
+      });
+      router.back();
+    } catch (err) {
+      console.error(err);
+      toast.error("Transaction Rejected", {
+        position: "top-center",
+        autoClose: 4000,
+      });
+      toast.dismiss(id);
     }
-    router.back();
   };
   return (
     <div className="h-[100vh] w-full dark:bg-black bg-white  dark:bg-grid-white/[0.2] bg-grid-black/[0.2] relative flex flex-col items-center justify-center">
@@ -64,7 +86,7 @@ export default function UniversityProfileForm() {
         variant="underlined"
         onChange={(e) => setUniversityName(e.target.value)}
       />
-        
+
       <Input
         size="lg"
         className="w-[50%] mt-5"
@@ -79,6 +101,7 @@ export default function UniversityProfileForm() {
           Submit
         </div>
       </button>
+      <ToastContainer />
     </div>
   );
 }

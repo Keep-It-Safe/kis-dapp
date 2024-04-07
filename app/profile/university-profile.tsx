@@ -12,6 +12,7 @@ import {
   getKeyValue,
 } from "@nextui-org/react";
 import {useState, useEffect} from "react";
+import {toast, ToastContainer} from "react-toastify"; 
 
 export default function UniversityProfule() {
   const [allStudents, setAllStudents] = useState<any>();
