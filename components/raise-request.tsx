@@ -77,11 +77,6 @@ export default function RaiseRequest() {
       }
     } catch (err) {
       console.error(err);
-      toast.error("Transaction Rejected", {
-        position: 'top-center',
-        autoClose: 4000,
-      });
-      toast.dismiss(id); 
     }
   };
 

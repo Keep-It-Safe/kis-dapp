@@ -75,7 +75,7 @@ export default function StudentProfile() {
       console.log(parseInt(idCardDoc.expiresIn));
       countDownInterval = setInterval(() => {
         console.log(parseInt(idCardDoc.expiresIn) - time);
-        if(parseInt(idCardDoc.expiresIn) - time<=0){
+        if (parseInt(idCardDoc.expiresIn) - time <= 0) {
           setRemove(true);
         }
         setTime(prevTime => prevTime + 1);
@@ -102,10 +102,10 @@ export default function StudentProfile() {
     <div className="h-[50rem] mt-16 w-full dark:bg-black bg-white  dark:bg-grid-white/[0.2] bg-grid-black/[0.2] relative flex flex-col items-center justify-center">
       <div className="absolute pointer-events-none inset-0 flex items-center justify-center dark:bg-black bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
       <div className="text-4xl mt-[15%] sm:text-7xl font-bold relative z-20 bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-neutral-500 py-5">
-        {`${
-          studentDetails ? studentDetails[0] : <CircularProgress />
-        }'s documents`}
+        {`${studentDetails ? studentDetails[0] : <CircularProgress />
+          }'s documents`}
       </div>
+      
       <div className=" text-4xl flex flex-col">
         <div>Expires in {(idCardDoc?.expiresIn && !remove) ? parseInt(idCardDoc.expiresIn) - parseInt(time) : 0} sec</div>
         <div>
@@ -116,13 +116,16 @@ export default function StudentProfile() {
                 radius="lg"
                 alt={"ID Card"}
                 className="w-full object-cover h-[140px]"
-                src="https://i.ibb.co/pd1H6HZ/idCard.jpg"
+                src={`${(idCardDoc?.expiresIn && !remove)
+                  ? 'https://i.ibb.co/pd1H6HZ/idCard.jpg'
+                  : 'https://placehold.co/600x400?text=Placeholder'
+                  }`}
               />
             </CardBody>
             <CardFooter className="text-small justify-between">
               <b>{"ID Card"}</b>
               <Button
-                color={(idCardPresent && !remove)? "success" : "danger"}
+                color={(idCardPresent && !remove) ? "success" : "danger"}
                 isIconOnly
                 onPress={() => {
                   if (!idCardPresent) {
